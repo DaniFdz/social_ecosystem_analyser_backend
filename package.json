@@ -1,14 +1,14 @@
 {
   "name": "tfg_back",
-  "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun run src/index.ts",
-    "test": "jest --watchAll"
+    "dev": "bun --watch src/index.ts",
+    "test:jest": "jest --watchAll"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.17",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "bun-types": "latest",
     "eslint": "^8.0.1",
@@ -16,9 +16,12 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
-    "typescript": "*"
-  },
-  "peerDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
     "typescript": "^5.0.0"
   },
   "dependencies": {

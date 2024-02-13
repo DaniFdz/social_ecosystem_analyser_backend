@@ -2,7 +2,7 @@ import { pathsToModuleNameMapper } from 'ts-jest'
 import { compilerOptions } from './tsconfig.json'
 
 export default {
-  roots: ['<rootDir>/app', '<rootDir>/test'],
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
