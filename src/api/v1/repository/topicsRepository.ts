@@ -1,32 +1,68 @@
 import { type Topic } from '@v1/repository/topicsInterface'
+import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1
 
 export abstract class TopicsRepository {
-  abstract getTopic: () => { data: Topic[] }
-  abstract addTopic: (topic: Topic) => Status
-  abstract updateTopic: (topic: Topic) => Status
+  abstract getTopic: () => Promise<{ data: Topic[] }>
+  abstract addTopic: (topic: Topic) => Promise<Status>
+  abstract updateTopic: (topic: Topic) => Promise<Status>
 }
 
 export class MongoDBTopicsRepository implements TopicsRepository {
+  topicCollection: Collection<Topic> | null = null
+
   constructor () {
-    const connection = 'mongodb://localhost:27017'
+    const connection = process.env.MONGODB_URI ?? 'mongodb://admin:adminlocalhost:27017/'
+    const client = new MongoClient(connection)
 
-    console.log(`Connecting to ${connection}...`)
+    client.connect()
+      .then((conn) => {
+        this.topicCollection = conn.db('test').collection<Topic>('topics')
+      }).catch((err) => {
+        console.error(err)
+      })
   }
 
-  getTopic (): { data: Topic[] } {
-    console.log('Getting topics from MongoDB...')
-    return { data: [] }
+  async getTopic (): Promise<{ data: Topic[] }> {
+    const result = await this.topicCollection?.find().toArray()
+
+    let data: Topic[] = []
+    if (result !== null) {
+      data = result?.map((topic) => {
+        return {
+          name: topic.name,
+          finished: topic.finished
+        }
+      }) as Topic[]
+    }
+    console.log('Topics retrieved')
+    return { data }
   }
 
-  addTopic (topic: Topic): Status {
-    console.log('Adding topic to MongoDB...')
+  async addTopic (topic: Topic): Promise<Status> {
+    if (await this.topicCollection?.findOne({ name: topic.name }) !== null) {
+      console.error(`Topic '${topic.name}' already exists`)
+      return 1
+    }
+
+    const result = await this.topicCollection?.insertOne(topic)
+    if (result?.insertedId === undefined) {
+      console.error(`Error adding topic '${topic.name}'`)
+      return 1
+    }
+
+    console.log(`Topic '${topic.name}' added`)
     return 0
   }
 
-  updateTopic (topic: Topic): Status {
-    console.log('Updating topic in MongoDB...')
+  async updateTopic (topic: Topic): Promise<Status> {
+    const result = await this.topicCollection?.updateOne({ name: topic.name }, { $set: topic })
+    if (result?.modifiedCount === 0) {
+      console.error(`Error updating topic '${topic.name}'`)
+      return 1
+    }
+    console.log(`Topic '${topic.name}' updated`)
     return 0
   }
 }

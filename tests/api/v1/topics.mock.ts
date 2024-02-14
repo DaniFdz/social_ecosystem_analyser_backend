@@ -9,9 +9,9 @@ export class MockTopicsRepository implements TopicsRepository {
     this.data = []
   }
 
-  getTopic: () => { data: Topic[] } = jest.fn(() => ({ data: this.data }))
+  getTopic: () => Promise<{ data: Topic[] }> = jest.fn(async () => ({ data: this.data }))
 
-  addTopic: (topic: Topic) => Status = jest.fn((topic: Topic) => {
+  addTopic: (topic: Topic) => Promise<Status> = jest.fn(async (topic: Topic) => {
     if (this.data.find((t) => t.name === topic.name) !== undefined) {
       return 1 as Status
     }
@@ -19,7 +19,7 @@ export class MockTopicsRepository implements TopicsRepository {
     return 0 as Status
   })
 
-  updateTopic: (topic: Topic) => Status = jest.fn((topic: Topic) => {
+  updateTopic: (topic: Topic) => Promise<Status> = jest.fn(async (topic: Topic) => {
     const index = this.data.findIndex((t) => t.name === topic.name)
     if (index === -1) {
       return 1 as Status

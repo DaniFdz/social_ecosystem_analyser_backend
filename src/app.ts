@@ -15,7 +15,7 @@ export const getApp = (topicsRepository: TopicsRepository): Express => {
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
   app.use('/api/v1/topics', topicsRouter)
-  app.get('/checkHealth', (req, res) => {
+  app.get('/health', (req, res) => {
     res.status(200).json({ message: 'Server is running' })
   })
 

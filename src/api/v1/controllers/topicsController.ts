@@ -9,12 +9,12 @@ export class TopicsController {
     this.topicsRepository = topicsRepository
   }
 
-  getTopic (req: Request, res: Response): void {
-    const data = this.topicsRepository.getTopic()
+  async getTopic (req: Request, res: Response): Promise<void> {
+    const data = await this.topicsRepository.getTopic()
     res.json(data)
   }
 
-  postTopic (req: Request, res: Response): void {
+  async postTopic (req: Request, res: Response): Promise<void> {
     const { body } = req
     if (body.name === undefined) {
       res.sendStatus(422)
@@ -26,7 +26,7 @@ export class TopicsController {
       finished: false
     }
 
-    const status = this.topicsRepository.addTopic(topic)
+    const status = await this.topicsRepository.addTopic(topic)
     if (status !== 0) {
       res.sendStatus(500)
       return
@@ -34,7 +34,7 @@ export class TopicsController {
     res.sendStatus(201)
   }
 
-  putTopic (req: Request, res: Response): void {
+  async putTopic (req: Request, res: Response): Promise<void> {
     const { body } = req
     if (body.name === undefined) {
       res.sendStatus(422)
@@ -46,7 +46,7 @@ export class TopicsController {
       finished: true
     }
 
-    const status = this.topicsRepository.updateTopic(topic)
+    const status = await this.topicsRepository.updateTopic(topic)
     if (status !== 0) {
       res.sendStatus(404)
       return
