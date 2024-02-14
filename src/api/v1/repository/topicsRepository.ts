@@ -1,4 +1,4 @@
-import { type Topic } from '@/api/v1/repository/topicsInterface'
+import { type Topic } from '@v1/repository/topicsInterface'
 
 export type Status = 0 | 1
 

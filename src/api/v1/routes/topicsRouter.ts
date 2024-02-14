@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { TopicsController } from '@/api/v1/controllers/topicsController'
-import { type TopicsRepository } from '@/api/v1/repository/topicsRepository'
+import { TopicsController } from '@v1/controllers/topicsController'
+import { type TopicsRepository } from '@v1/repository/topicsRepository'
 
 export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
   const router = Router()

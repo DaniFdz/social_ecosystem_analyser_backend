@@ -1,5 +1,5 @@
 import { getApp } from '@/app'
-import { MongoDBTopicsRepository } from './api/v1/repository/topicsRepository'
+import { MongoDBTopicsRepository } from '@v1/repository/topicsRepository'
 
 const PORT = process.env.PORT ?? 3000
 

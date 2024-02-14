@@ -1,8 +1,8 @@
-import express, { type Express } from 'express'
-import bodyParser from 'body-parser'
-import { getTopicsRouter } from '@/api/v1/routes/topicsRouter'
 import { config } from 'dotenv'
-import { type TopicsRepository } from './api/v1/repository/topicsRepository'
+import bodyParser from 'body-parser'
+import express, { type Express } from 'express'
+import { getTopicsRouter } from '@v1/routes/topicsRouter'
+import { type TopicsRepository } from '@v1/repository/topicsRepository'
 
 config()
 
