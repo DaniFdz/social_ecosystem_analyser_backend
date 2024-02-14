@@ -8,6 +8,7 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "ignorePatterns": ["temp.ts", "**/vendor/*.ts", "jest.config.ts"],
     "rules": {
     }
 }

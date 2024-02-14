@@ -3,7 +3,11 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "test:jest": "jest --watchAll"
+    "db_up": "docker compose -f docker-compose.dev.yml up -d",
+    "db_down": "docker compose -f docker-compose.dev.yml down",
+    "test:jest": "jest",
+    "test:jest:watch": "jest --watchAll",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
@@ -29,6 +33,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0"
   }
 }
