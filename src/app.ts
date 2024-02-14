@@ -7,6 +7,7 @@ config()
 
 const app: Express = express()
 
+app.disable('x-powered-by')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/api/v1/topics', topicsRouter)

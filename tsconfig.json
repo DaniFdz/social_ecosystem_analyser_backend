@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@v1/*": ["src/api/v1/*"],
     },
     "lib": ["ESNext"],
     "module": "esnext",

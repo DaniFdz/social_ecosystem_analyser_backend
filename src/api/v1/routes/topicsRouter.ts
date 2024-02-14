@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Router } from 'express'
-import topicsController from '../controllers/topicsController'
+import { type TopicsRepository } from '@v1/repository/topicsRepository'
 
 const router = Router()
+
+
+class Router {
+  topicsRepository: TopicsRepository
+}
 
 router
   .get('/', topicsController.getTopic)
