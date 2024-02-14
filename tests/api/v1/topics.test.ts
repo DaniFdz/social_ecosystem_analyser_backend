@@ -1,7 +1,12 @@
-import app from '@/app'
+import { getApp } from '@/app'
 import supertest from 'supertest'
 import { describe, it, expect } from '@jest/globals'
 import { type Topic } from '@v1/repository/topicsInterface'
+import { MockTopicsRepository } from './topics.mock'
+
+const mockTopicsRepository = new MockTopicsRepository()
+
+const app = getApp(mockTopicsRepository)
 
 const request = supertest(app)
 

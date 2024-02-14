@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Router } from 'express'
-import { type TopicsRepository } from '@v1/repository/topicsRepository'
+import { TopicsController } from '@/api/v1/controllers/topicsController'
+import { type TopicsRepository } from '@/api/v1/repository/topicsRepository'
 
-const router = Router()
+export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
+  const router = Router()
 
+  const topicsController = new TopicsController(topicsRepository)
 
-class Router {
-  topicsRepository: TopicsRepository
+  router
+    .get('/', (req, res) => { topicsController.getTopic(req, res) })
+    .post('/', (req, res) => { topicsController.postTopic(req, res) })
+    .put('/', (req, res) => { topicsController.putTopic(req, res) })
+  return router
 }
-
-router
-  .get('/', topicsController.getTopic)
-  .post('/', topicsController.postTopic)
-
-export default router

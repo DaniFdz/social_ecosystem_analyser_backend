@@ -16,14 +16,17 @@ export class MongoDBTopicsRepository implements TopicsRepository {
   }
 
   getTopic (): { data: Topic[] } {
+    console.log('Getting topics from MongoDB...')
     return { data: [] }
   }
 
   addTopic (topic: Topic): Status {
+    console.log('Adding topic to MongoDB...')
     return 0
   }
 
   updateTopic (topic: Topic): Status {
+    console.log('Updating topic in MongoDB...')
     return 0
   }
 }

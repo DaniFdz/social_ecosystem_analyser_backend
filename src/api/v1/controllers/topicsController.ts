@@ -10,6 +10,7 @@ export class TopicsController {
   }
 
   getTopic (req: Request, res: Response): void {
+    console.log(this) // undefined
     const data = this.topicsRepository.getTopic()
     res.json(data)
   }
