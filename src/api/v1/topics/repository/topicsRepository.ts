@@ -13,12 +13,13 @@ export class MongoDBTopicsRepository implements TopicsRepository {
   topicCollection: Collection<Topic> | null = null
 
   constructor () {
-    const connection = process.env.MONGODB_URI ?? 'mongodb://admin:adminlocalhost:27017/'
+    const connection = process.env.MONGODB_URI ?? 'mongodb://admin:admin@localhost:27017/'
     const client = new MongoClient(connection)
+    const DB_NAME = process.env.DB_NAME ?? 'test'
 
     client.connect()
       .then((conn) => {
-        this.topicCollection = conn.db('test').collection<Topic>('topics')
+        this.topicCollection = conn.db(DB_NAME).collection<Topic>('topics')
       }).catch((err) => {
         console.error(err)
       })

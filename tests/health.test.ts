@@ -1,15 +1,13 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
-import { describe, it, expect, jest } from '@jest/globals'
-import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
+import { describe, it, expect } from '@jest/globals'
+import { MockTopicsRepository } from './api/v1/topics/topics.mock'
+import { MockAuthRepository } from './api/v1/auth/auth.mock'
 
-const mockRepository = {
-  getTopic: jest.fn(),
-  addTopic: jest.fn(),
-  updateTopic: jest.fn()
-} as unknown as TopicsRepository
+const mockAuthRepository = new MockAuthRepository()
+const mockTopicsRepository = new MockTopicsRepository()
 
-const app = getApp(mockRepository)
+const app = getApp(mockAuthRepository, mockTopicsRepository)
 
 const request = supertest(app)
 

@@ -1,17 +1,19 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
-import { describe, it, expect, beforeEach } from '@jest/globals'
+import { describe, it, expect, afterEach } from '@jest/globals'
 import { type Topic } from '@v1/topics/repository/topicsInterface'
 import { MockTopicsRepository } from './topics.mock'
+import { MockAuthRepository } from '../auth/auth.mock'
 
+const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
 
-const app = getApp(mockTopicsRepository)
+const app = getApp(mockAuthRepository, mockTopicsRepository)
 
 const request = supertest(app)
 
 describe('endpoint /api/v1/topics', () => {
-  beforeEach(() => {
+  afterEach(() => {
     mockTopicsRepository.resetData()
   })
   describe('GET /api/v1/topics', () => {
