@@ -64,21 +64,14 @@ export class AuthController {
       res.sendStatus(401)
       return
     }
+
     const user = await this.authRepository.getUserByName(payload.username)
     if (user === null) {
       res.sendStatus(401)
       return
     }
-    if (user._id !== payload.id) {
-      res.sendStatus(401)
-      return
-    }
-    if (user.role !== payload.role) {
-      res.sendStatus(401)
-      return
-    }
 
-    res.status(200).json(payload)
+    res.status(200).json({ id: user._id, username: user.username, role: user.role })
   }
 
   async update (req: Request, res: Response): Promise<void> {

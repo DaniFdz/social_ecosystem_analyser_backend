@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: mongo:7.0.2-jammy
+    container_name: my-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./mongodb_data:/data/db"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS}
+    networks:
+      - default
+
+  api:
+    build: .
+    container_name: my-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: "mongodb://${MONGODB_USER}:${MONGODB_PASS}@db:27017"
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+    networks:
+      - default

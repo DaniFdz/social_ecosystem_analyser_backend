@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
     "db_up": "docker compose -f docker-compose.dev.yml up -d",
     "db_down": "docker compose -f docker-compose.dev.yml down",
     "test:jest": "jest",
