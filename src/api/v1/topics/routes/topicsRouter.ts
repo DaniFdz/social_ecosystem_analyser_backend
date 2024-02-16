@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
-import { TopicsController } from '@v1/controllers/topicsController'
-import { type TopicsRepository } from '@v1/repository/topicsRepository'
+import { TopicsController } from '@v1/topics/controllers/topicsController'
+import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
 
 export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
   const router = Router()

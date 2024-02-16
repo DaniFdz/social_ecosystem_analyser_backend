@@ -1,7 +1,7 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
 import { describe, it, expect, jest } from '@jest/globals'
-import { type TopicsRepository } from '@v1/repository/topicsRepository'
+import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
 
 const mockRepository = {
   getTopic: jest.fn(),

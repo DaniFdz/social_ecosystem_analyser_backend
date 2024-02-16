@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
-import { type TopicsRepository } from '@/api/v1/repository/topicsRepository'
-import { type Topic } from '@/api/v1/repository/topicsInterface'
+import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
+import { type Topic } from '@v1/topics/repository/topicsInterface'
 
 export class TopicsController {
   topicsRepository: TopicsRepository

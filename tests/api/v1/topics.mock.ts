@@ -1,5 +1,5 @@
-import { type Topic } from '@v1/repository/topicsInterface'
-import { type Status, type TopicsRepository } from '@v1/repository/topicsRepository'
+import { type Topic } from '@v1/topics/repository/topicsInterface'
+import { type Status, type TopicsRepository } from '@v1/topics/repository/topicsRepository'
 import { jest } from '@jest/globals'
 
 export class MockTopicsRepository implements TopicsRepository {
