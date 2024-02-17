@@ -31,7 +31,8 @@ export class TopicsController {
 
     const topic: Topic = {
       name: body.name,
-      finished: false
+      finished: false,
+      next_page_token: ''
     }
 
     const status = await this.topicsRepository.addTopic(topic)
@@ -48,14 +49,15 @@ export class TopicsController {
       return
     }
     const { body } = req
-    if (body.name === undefined) {
+    if (body.name === undefined || body.finished === undefined || body.next_page_token === undefined) {
       res.sendStatus(422)
       return
     }
 
     const topic: Topic = {
       name: body.name,
-      finished: true
+      finished: body.finished,
+      next_page_token: body.next_page_token
     }
 
     const status = await this.topicsRepository.updateTopic(topic)
