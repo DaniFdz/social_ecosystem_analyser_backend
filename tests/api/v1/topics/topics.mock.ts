@@ -28,6 +28,11 @@ export class MockTopicsRepository implements TopicsRepository {
     return 0 as Status
   })
 
+  getTopicByName: (name: string) => Promise<Topic | null> = jest.fn(async (name: string) => {
+    const topic = this.data.find((t) => t.name === name)
+    return topic ?? null
+  })
+
   resetData (): void {
     this.data = []
   }

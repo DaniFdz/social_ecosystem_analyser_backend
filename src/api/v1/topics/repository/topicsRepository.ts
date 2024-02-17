@@ -7,6 +7,7 @@ export abstract class TopicsRepository {
   abstract getTopic: () => Promise<{ data: Topic[] }>
   abstract addTopic: (topic: Topic) => Promise<Status>
   abstract updateTopic: (topic: Topic) => Promise<Status>
+  abstract getTopicByName: (name: string) => Promise<Topic | null>
 }
 
 export class MongoDBTopicsRepository implements TopicsRepository {
@@ -65,5 +66,22 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     }
     console.log(`Topic '${topic.name}' updated`)
     return 0
+  }
+
+  async getTopicByName (name: string): Promise<Topic | null> {
+    const result = await this.topicCollection
+      ?.findOne({ name })
+    if (result === null) {
+      console.error(`Topic '${name}' not found`)
+      return null
+    }
+    console.log(`Topic '${name}' retrieved`)
+
+    const topic: Topic = {
+      name: result?.name ?? '',
+      finished: result?.finished ?? false
+    }
+
+    return topic
   }
 }

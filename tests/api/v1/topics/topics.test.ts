@@ -77,4 +77,18 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(200)
     })
   })
+
+  describe('GET /api/v1/topics/:name', () => {
+    it('should return 404 if the topic was not found', async () => {
+      const response = await request.get('/api/v1/topics/test')
+      expect(response.status).toBe(404)
+    })
+    it('should return 200 if the topic was found', async () => {
+      await request.post('/api/v1/topics').send({
+        name: 'test'
+      })
+      const response = await request.get('/api/v1/topics/test')
+      expect(response.status).toBe(200)
+    })
+  })
 })

@@ -53,4 +53,15 @@ export class TopicsController {
     }
     res.sendStatus(200)
   }
+
+  // GET /api/v1/topics/:name
+  async getTopicByName (req: Request, res: Response): Promise<void> {
+    const { name } = req.params
+    const topic = await this.topicsRepository.getTopicByName(name)
+    if (topic === null) {
+      res.sendStatus(404)
+      return
+    }
+    res.json(topic)
+  }
 }
