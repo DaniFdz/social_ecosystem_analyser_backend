@@ -79,7 +79,8 @@ export class MongoDBTopicsRepository implements TopicsRepository {
 
     const topic: Topic = {
       name: result?.name ?? '',
-      finished: result?.finished ?? false
+      finished: result?.finished ?? false,
+      next_page_token: result?.next_page_token ?? ''
     }
 
     return topic

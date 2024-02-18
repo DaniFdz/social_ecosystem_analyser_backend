@@ -1,4 +1,4 @@
-import { type Request, type Response } from 'express'
+import type { Request, Response } from 'express'
 import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
 import { type Topic } from '@v1/topics/repository/topicsInterface'
 
@@ -10,11 +10,19 @@ export class TopicsController {
   }
 
   async getTopic (req: Request, res: Response): Promise<void> {
+    if (!req.authenticated) {
+      res.sendStatus(401)
+      return
+    }
     const data = await this.topicsRepository.getTopic()
     res.json(data)
   }
 
   async postTopic (req: Request, res: Response): Promise<void> {
+    if (!req.authenticated) {
+      res.sendStatus(401)
+      return
+    }
     const { body } = req
     if (body.name === undefined) {
       res.sendStatus(422)
@@ -23,7 +31,8 @@ export class TopicsController {
 
     const topic: Topic = {
       name: body.name,
-      finished: false
+      finished: false,
+      next_page_token: ''
     }
 
     const status = await this.topicsRepository.addTopic(topic)
@@ -35,15 +44,20 @@ export class TopicsController {
   }
 
   async putTopic (req: Request, res: Response): Promise<void> {
+    if (!req.authenticated) {
+      res.sendStatus(401)
+      return
+    }
     const { body } = req
-    if (body.name === undefined) {
+    if (body.name === undefined || body.finished === undefined || body.next_page_token === undefined) {
       res.sendStatus(422)
       return
     }
 
     const topic: Topic = {
       name: body.name,
-      finished: true
+      finished: body.finished,
+      next_page_token: body.next_page_token
     }
 
     const status = await this.topicsRepository.updateTopic(topic)
@@ -54,8 +68,11 @@ export class TopicsController {
     res.sendStatus(200)
   }
 
-  // GET /api/v1/topics/:name
   async getTopicByName (req: Request, res: Response): Promise<void> {
+    if (!req.authenticated) {
+      res.sendStatus(401)
+      return
+    }
     const { name } = req.params
     const topic = await this.topicsRepository.getTopicByName(name)
     if (topic === null) {
