@@ -4,11 +4,13 @@ import { describe, it, expect, afterEach, beforeAll } from '@jest/globals'
 import { type Topic } from '@v1/topics/repository/topicsInterface'
 import { MockTopicsRepository } from './topics.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
+import { MockVideosRepository } from '../videos/videos.mock'
 
 const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
+const mockVideosRepository = new MockVideosRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository)
 
 const request = supertest(app)
 
