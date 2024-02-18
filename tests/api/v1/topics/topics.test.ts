@@ -131,5 +131,14 @@ describe('endpoint /api/v1/topics', () => {
       const response = await request.get('/api/v1/topics/test').set('Authorization', token)
       expect(response.status).toBe(200)
     })
+    it('should return the topic', async () => {
+      await request.post('/api/v1/topics').set('Authorization', token).send({
+        name: 'test'
+      })
+      const response = await request.get('/api/v1/topics/test').set('Authorization', token)
+      expect(response.body.name).toBe('test')
+      expect(response.body.finished).toBe(false)
+      expect(response.body.next_page_token).toBe('')
+    })
   })
 })
