@@ -6,7 +6,7 @@ import type { TopicsRepository } from '@v1/topics/repository/topicsRepository'
 import type { AuthRepository } from '@v1/auth/repository/authRepository'
 import { getAuthRouter } from '@v1/auth/routes/authRoutes'
 import { authenticate } from '@/middlewares/authentication'
-import { VideosRepository } from './api/v1/videos/repository/videosRepository'
+import { type VideosRepository } from './api/v1/videos/repository/videosRepository'
 import { getVideosRouter } from './api/v1/videos/routes/videosRouter'
 
 config()

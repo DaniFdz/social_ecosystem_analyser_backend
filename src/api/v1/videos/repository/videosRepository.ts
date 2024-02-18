@@ -66,7 +66,7 @@ export class MongoDBVideosRepository implements VideosRepository {
 
   async getVideoByName (title: string): Promise<VideoData | null> {
     const result = await this.videoCollection
-      ?.findOne({title})
+      ?.findOne({ title })
     console.log(result)
     if (result === null) {
       console.error(`Video '${title}' not found`)
