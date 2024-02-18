@@ -3,11 +3,13 @@ import supertest from 'supertest'
 import { describe, it, expect } from '@jest/globals'
 import { MockTopicsRepository } from './api/v1/topics/topics.mock'
 import { MockAuthRepository } from './api/v1/auth/auth.mock'
+import { MockVideosRepository } from './api/v1/videos/videos.mock'
 
 const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
+const mockVideosRepository = new MockVideosRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository)
 
 const request = supertest(app)
 
