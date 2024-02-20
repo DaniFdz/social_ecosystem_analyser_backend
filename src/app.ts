@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import bodyParser from 'body-parser'
+import cors, { type CorsOptions } from 'cors'
 import express, { type Express } from 'express'
 import { getTopicsRouter } from '@v1/topics/routes/topicsRouter'
 import type { TopicsRepository } from '@v1/topics/repository/topicsRepository'
@@ -17,6 +18,15 @@ export const getApp = (authRepository: AuthRepository, topicsRepository: TopicsR
   const authRouter = getAuthRouter(authRepository)
   const topicsRouter = getTopicsRouter(topicsRepository)
   const videosRouter = getVideosRouter(videosRepository)
+
+  const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:4321'
+
+  const corsOptions: CorsOptions = {
+    origin: CORS_ORIGIN,
+    optionsSuccessStatus: 200
+  }
+
+  app.use(cors(corsOptions))
 
   app.disable('x-powered-by')
   app.use(bodyParser.urlencoded({ extended: true }))
