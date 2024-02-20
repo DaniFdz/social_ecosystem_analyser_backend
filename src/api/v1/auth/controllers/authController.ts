@@ -17,7 +17,7 @@ export class AuthController {
       return
     }
     const hashedPassword = await hashPassword(body.password as string)
-    const user: User = { username: body.username, password: hashedPassword, role: 'user' }
+    const user: User = { username: body.username, password: hashedPassword, role: 'guest' }
     const status = await this.authRepository.createUser(user)
     if (status !== 0) {
       res.sendStatus(500)

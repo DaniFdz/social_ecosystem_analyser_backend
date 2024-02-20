@@ -21,6 +21,7 @@ services:
     ports:
       - "3000:3000"
     environment:
+      PORT: ${PORT}
       MONGODB_URI: "mongodb://${MONGODB_USER}:${MONGODB_PASS}@db:27017"
       DB_NAME: ${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}

@@ -10,7 +10,7 @@ export class TopicsController {
   }
 
   async getTopic (req: Request, res: Response): Promise<void> {
-    if (!req.authenticated) {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }
@@ -19,7 +19,7 @@ export class TopicsController {
   }
 
   async postTopic (req: Request, res: Response): Promise<void> {
-    if (!req.authenticated) {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }
@@ -44,7 +44,7 @@ export class TopicsController {
   }
 
   async putTopic (req: Request, res: Response): Promise<void> {
-    if (!req.authenticated) {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }
@@ -69,7 +69,7 @@ export class TopicsController {
   }
 
   async getTopicByName (req: Request, res: Response): Promise<void> {
-    if (!req.authenticated) {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }

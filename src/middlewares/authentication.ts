@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from 'express'
+import type { Payload } from '@/lib/cryptography'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      authenticated: boolean
+      role: string
     }
   }
 }
@@ -14,12 +15,12 @@ const JWT_SECRET = process.env.JWT_SECRET ?? 'secret'
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization?.split(' ')[1]
-  req.authenticated = false
+  req.role = 'guest'
 
   if (token !== undefined) {
     try {
-      jwt.verify(token, JWT_SECRET)
-      req.authenticated = true
+      const { role } = jwt.verify(token, JWT_SECRET) as Payload
+      req.role = role
     } catch (err) {}
   }
   next()

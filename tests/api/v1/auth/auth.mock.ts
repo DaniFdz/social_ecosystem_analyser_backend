@@ -27,6 +27,7 @@ export class MockAuthRepository implements AuthRepository {
       newId = (parseInt(this.users[this.users.length - 1]._id ?? '0') + 1).toString()
     }
     user._id = newId
+    user.role = 'admin'
     this.users.push(user)
     return 0
   })
