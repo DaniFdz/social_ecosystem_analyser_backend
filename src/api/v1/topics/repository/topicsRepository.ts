@@ -8,6 +8,7 @@ export abstract class TopicsRepository {
   abstract addTopic: (topic: Topic) => Promise<Status>
   abstract updateTopic: (topic: Topic) => Promise<Status>
   abstract getTopicByName: (name: string) => Promise<Topic | null>
+  abstract deleteTopic: (name: string) => Promise<Status>
 }
 
 export class MongoDBTopicsRepository implements TopicsRepository {
@@ -84,5 +85,16 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     }
 
     return topic
+  }
+
+  async deleteTopic (name: string): Promise<Status> {
+    const result = await this.topicCollection
+      ?.deleteOne({ name })
+    if (result?.deletedCount === 0) {
+      console.error(`Error deleting topic '${name}'`)
+      return 1
+    }
+    console.log(`Topic '${name}' deleted`)
+    return 0
   }
 }

@@ -81,4 +81,18 @@ export class TopicsController {
     }
     res.json(topic)
   }
+
+  async deleteTopic (req: Request, res: Response): Promise<void> {
+    if (req.role === 'guest') {
+      res.sendStatus(401)
+      return
+    }
+    const { name } = req.params
+    const status = await this.topicsRepository.deleteTopic(name)
+    if (status !== 0) {
+      res.sendStatus(404)
+      return
+    }
+    res.sendStatus(200)
+  }
 }

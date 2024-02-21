@@ -143,4 +143,22 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.body.next_page_token).toBe('')
     })
   })
+
+  describe('DELETE /api/v1/topics/:name', () => {
+    it('should return 401 if the user is not authenticated', async () => {
+      const response = await request.delete('/api/v1/topics/test')
+      expect(response.status).toBe(401)
+    })
+    it('should return 404 if the topic was not found', async () => {
+      const response = await request.delete('/api/v1/topics/test').set('Authorization', token)
+      expect(response.status).toBe(404)
+    })
+    it('should return 200 if the topic was deleted', async () => {
+      await request.post('/api/v1/topics').set('Authorization', token).send({
+        name: 'test'
+      })
+      const response = await request.delete('/api/v1/topics/test').set('Authorization', token)
+      expect(response.status).toBe(200)
+    })
+  })
 })

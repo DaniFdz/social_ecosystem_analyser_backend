@@ -36,4 +36,13 @@ export class MockTopicsRepository implements TopicsRepository {
   resetData (): void {
     this.data = []
   }
+
+  deleteTopic: (name: string) => Promise<Status> = jest.fn(async (name: string) => {
+    const index = this.data.findIndex((t) => t.name === name)
+    if (index === -1) {
+      return 1 as Status
+    }
+    this.data.splice(index, 1)
+    return 0 as Status
+  })
 }
