@@ -35,7 +35,8 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       data = result?.map((topic) => {
         return {
           name: topic.name,
-          finished: topic.finished
+          finished: topic.finished,
+          next_page_token: topic.next_page_token
         }
       }) as Topic[]
     }
