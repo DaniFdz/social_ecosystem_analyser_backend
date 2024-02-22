@@ -75,7 +75,7 @@ describe('endpoint /api/v1/topics', () => {
 
   describe('PUT /api/v1/topics', () => {
     it('should return 401 if the user is not authenticated', async () => {
-      const response = await request.put('/api/v1/topics').send({
+      const response = await request.put('/api/v1/topics/test').send({
         name: 'test',
         finished: true,
         next_page_token: ''
@@ -83,7 +83,7 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(401)
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.put('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
         notAValidArgument: 'test',
         finished: true,
         next_page_token: ''
@@ -91,7 +91,7 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(422)
     })
     it('should return 404 if the topic was not found', async () => {
-      const response = await request.put('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
         name: 'test',
         finished: true,
         next_page_token: ''
@@ -102,13 +102,13 @@ describe('endpoint /api/v1/topics', () => {
       await request.post('/api/v1/topics').set('Authorization', token).send({
         name: 'test'
       })
-      const response = await request.put('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
         name: 'test',
         finished: true,
         next_page_token: ''
       })
       expect(response.status).toBe(200)
-      const response2 = await request.put('/api/v1/topics').set('Authorization', token).send({
+      const response2 = await request.put('/api/v1/topics/test').set('Authorization', token).send({
         name: 'test',
         finished: true,
         next_page_token: 'pepe'

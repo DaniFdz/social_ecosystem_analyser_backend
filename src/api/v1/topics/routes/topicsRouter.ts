@@ -11,7 +11,7 @@ export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
   router
     .get('/', async (req, res) => { await topicsController.getTopic(req, res) })
     .post('/', async (req, res) => { await topicsController.postTopic(req, res) })
-    .put('/', async (req, res) => { await topicsController.putTopic(req, res) })
+    .put('/:name', async (req, res) => { await topicsController.putTopic(req, res) })
     .get('/:name', async (req, res) => { await topicsController.getTopicByName(req, res) })
     .delete('/:name', async (req, res) => { await topicsController.deleteTopic(req, res) })
   return router

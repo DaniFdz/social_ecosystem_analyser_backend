@@ -149,13 +149,13 @@ describe('endpoint /api/v1/auth', () => {
       })
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.put('/api/v1/auth/update').send({
+      const response = await request.put('/api/v1/auth/test').send({
         notAValidArgument: 'test'
       })
       expect(response.status).toBe(422)
     })
     it('should return 400 if the user does not exist', async () => {
-      const response = await request.put('/api/v1/auth/update').send({
+      const response = await request.put('/api/v1/auth/wrongUsername').send({
         username: 'wrongUsername',
         password: 'test',
         newPassword: 'newPassword'
@@ -163,7 +163,7 @@ describe('endpoint /api/v1/auth', () => {
       expect(response.status).toBe(400)
     })
     it('should return 401 if the password is incorrect', async () => {
-      const response = await request.put('/api/v1/auth/update').send({
+      const response = await request.put('/api/v1/auth/test').send({
         username: 'test',
         password: 'wrongPassword',
         newPassword: 'newPassword'
@@ -171,7 +171,7 @@ describe('endpoint /api/v1/auth', () => {
       expect(response.status).toBe(401)
     })
     it('should return 200', async () => {
-      const response = await request.put('/api/v1/auth/update').send({
+      const response = await request.put('/api/v1/auth/test').send({
         username: 'test',
         password: 'test',
         newPassword: 'newPassword'
@@ -188,27 +188,27 @@ describe('endpoint /api/v1/auth', () => {
       })
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.delete('/api/v1/auth/delete').send({
+      const response = await request.delete('/api/v1/auth/').send({
         notAValidArgument: 'test'
       })
       expect(response.status).toBe(422)
     })
     it('should return 400 if the user does not exist', async () => {
-      const response = await request.delete('/api/v1/auth/delete').send({
+      const response = await request.delete('/api/v1/auth/').send({
         username: 'wrongUsername',
         password: 'test'
       })
       expect(response.status).toBe(400)
     })
     it('should return 401 if the password is incorrect', async () => {
-      const response = await request.delete('/api/v1/auth/delete').send({
+      const response = await request.delete('/api/v1/auth/').send({
         username: 'test',
         password: 'wrongPassword'
       })
       expect(response.status).toBe(401)
     })
     it('should return 200', async () => {
-      const response = await request.delete('/api/v1/auth/delete').send({
+      const response = await request.delete('/api/v1/auth/').send({
         username: 'test',
         password: 'test'
       })
@@ -219,7 +219,7 @@ describe('endpoint /api/v1/auth', () => {
         username: 'test',
         password: 'test'
       })).body.token
-      await request.delete('/api/v1/auth/delete').send({
+      await request.delete('/api/v1/auth/').send({
         username: 'test',
         password: 'test'
       })

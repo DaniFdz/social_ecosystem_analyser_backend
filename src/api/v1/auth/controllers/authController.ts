@@ -81,6 +81,8 @@ export class AuthController {
       return
     }
 
+    const { username } = req.params
+
     const data = await this.authRepository.getUserByName(body.username as string) ?? null
     if (data === null || body.newPassword === undefined) {
       res.sendStatus(400)
@@ -94,7 +96,7 @@ export class AuthController {
 
     const newHashedPassword = await hashPassword(body.newPassword as string)
     const user: User = { username: data.username, password: newHashedPassword, role: data.role }
-    const status = await this.authRepository.updateUser(user)
+    const status = await this.authRepository.updateUser(username, user)
     if (status !== 0) {
       res.sendStatus(500)
       return

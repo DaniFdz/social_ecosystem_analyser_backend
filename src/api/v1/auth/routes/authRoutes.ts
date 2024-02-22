@@ -12,7 +12,7 @@ export function getAuthRouter (authRepository: AuthRepository): Router {
     .post('/login', async (req, res) => { await authController.login(req, res) })
     .post('/register', async (req, res) => { await authController.register(req, res) })
     .post('/getSession', async (req, res) => { await authController.getSession(req, res) })
-    .put('/update', async (req, res) => { await authController.update(req, res) })
-    .delete('/delete', async (req, res) => { await authController.delete(req, res) })
+    .put('/:username', async (req, res) => { await authController.update(req, res) })
+    .delete('/', async (req, res) => { await authController.delete(req, res) })
   return router
 }

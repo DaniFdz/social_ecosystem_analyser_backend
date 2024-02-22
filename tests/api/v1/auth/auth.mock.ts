@@ -32,7 +32,10 @@ export class MockAuthRepository implements AuthRepository {
     return 0
   })
 
-  updateUser = jest.fn(async (user: User) => {
+  updateUser = jest.fn(async (username: string, user: User) => {
+    if (this.users.findIndex((u) => u.username === username) === -1) {
+      return 1
+    }
     const index = this.users.findIndex((u) => u.username === user.username)
     if (index === -1) {
       return 1

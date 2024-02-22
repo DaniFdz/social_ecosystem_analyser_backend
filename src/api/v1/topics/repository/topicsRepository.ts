@@ -6,7 +6,7 @@ export type Status = 0 | 1
 export abstract class TopicsRepository {
   abstract getTopic: () => Promise<{ data: Topic[] }>
   abstract addTopic: (topic: Topic) => Promise<Status>
-  abstract updateTopic: (topic: Topic) => Promise<Status>
+  abstract updateTopic: (name: string, topic: Topic) => Promise<Status>
   abstract getTopicByName: (name: string) => Promise<Topic | null>
   abstract deleteTopic: (name: string) => Promise<Status>
 }
@@ -59,7 +59,11 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     return 0
   }
 
-  async updateTopic (topic: Topic): Promise<Status> {
+  async updateTopic (name: string, topic: Topic): Promise<Status> {
+    if (await this.topicCollection?.findOne({ name }) === null) {
+      console.error(`Topic '${topic.name}' not found`)
+      return 1
+    }
     const result = await this.topicCollection?.updateOne({ name: topic.name }, { $set: topic })
     if (result?.modifiedCount === 0) {
       console.error(`Error updating topic '${topic.name}'`)

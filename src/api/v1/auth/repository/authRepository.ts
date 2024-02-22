@@ -6,7 +6,7 @@ export type Status = 0 | 1
 export abstract class AuthRepository {
   abstract getUserByName: (username: string) => Promise<User | null>
   abstract createUser: (user: User) => Promise<Status>
-  abstract updateUser: (user: User) => Promise<Status>
+  abstract updateUser: (username: string, user: User) => Promise<Status>
   abstract deleteUser: (username: string) => Promise<Status>
 }
 
@@ -43,7 +43,10 @@ export class MongoDBAuthRepository implements AuthRepository {
     return 0
   }
 
-  async updateUser (user: User): Promise<Status> {
+  async updateUser (username: string, user: User): Promise<Status> {
+    if (await this.authCollection?.findOne({ username }) === null) {
+      return 1
+    }
     const status = await this.authCollection?.updateOne({ username: user.username }, { $set: user })
     if (status === undefined) {
       return 1

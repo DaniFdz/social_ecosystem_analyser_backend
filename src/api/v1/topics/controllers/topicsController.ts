@@ -60,7 +60,9 @@ export class TopicsController {
       next_page_token: body.next_page_token
     }
 
-    const status = await this.topicsRepository.updateTopic(topic)
+    const { name } = req.params
+
+    const status = await this.topicsRepository.updateTopic(name, topic)
     if (status !== 0) {
       res.sendStatus(404)
       return

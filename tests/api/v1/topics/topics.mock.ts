@@ -19,7 +19,10 @@ export class MockTopicsRepository implements TopicsRepository {
     return 0 as Status
   })
 
-  updateTopic: (topic: Topic) => Promise<Status> = jest.fn(async (topic: Topic) => {
+  updateTopic: (name: string, topic: Topic) => Promise<Status> = jest.fn(async (name: string, topic: Topic) => {
+    if (this.data.find((t) => t.name === name) === undefined) {
+      return 1 as Status
+    }
     const index = this.data.findIndex((t) => t.name === topic.name)
     if (index === -1) {
       return 1 as Status
