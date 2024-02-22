@@ -41,4 +41,4 @@ jobs:
       - name: Run deploy
         run: |
 
-          ssh target "cd tfg_back/ && docker compose down && git pull && docker compose build && docker compose up -d --force-recreate"
+          ssh target "cd social_ecosystem_analyser_backend/ && docker compose down && git pull && docker compose build && docker compose up -d --force-recreate"
