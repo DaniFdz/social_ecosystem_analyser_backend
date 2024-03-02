@@ -20,7 +20,7 @@ describe('endpoint /api/v1/videos', () => {
   beforeAll(async () => {
     const response = await request.post('/api/v1/auth/register').send({
       username: 'test',
-      password: 'test'
+      password: 'testtest'
     })
     token = `Bearer ${response.body.token}`
   })

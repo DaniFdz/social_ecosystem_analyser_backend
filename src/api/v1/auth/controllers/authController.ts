@@ -13,14 +13,22 @@ export class AuthController {
   async register (req: Request, res: Response): Promise<void> {
     const { body } = req
     if (body.username === undefined || body.password === undefined) {
-      res.sendStatus(422)
+      res.status(422).json({ message: 'Invalid content' })
+      return
+    }
+    if (body.username.length < 3) {
+      res.status(422).json({ message: 'Username must have at least 3 characters' })
+      return
+    }
+    if (body.password.length < 8) {
+      res.status(422).json({ message: 'Password must have at least 8 characters' })
       return
     }
     const hashedPassword = await hashPassword(body.password as string)
     const user: User = { username: body.username, password: hashedPassword, role: 'guest' }
     const status = await this.authRepository.createUser(user)
     if (status !== 0) {
-      res.sendStatus(500)
+      res.status(500).json({ message: 'Username already exists' })
       return
     }
 
@@ -33,18 +41,26 @@ export class AuthController {
   async login (req: Request, res: Response): Promise<void> {
     const { body } = req
     if (body.username === undefined || body.password === undefined) {
-      res.sendStatus(422)
+      res.status(422).json({ message: 'Invalid content' })
+      return
+    }
+    if (body.username.length < 3) {
+      res.status(422).json({ message: 'Username must have at least 3 characters' })
+      return
+    }
+    if (body.password.length < 8) {
+      res.status(422).json({ message: 'Password must have at least 8 characters' })
       return
     }
     const data = await this.authRepository.getUserByName(body.username as string) ?? null
     if (data === null) {
-      res.sendStatus(401)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
 
     const match = await comparePassword(body.password as string, data.password)
     if (!match) {
-      res.sendStatus(401)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
 
@@ -76,19 +92,34 @@ export class AuthController {
 
   async update (req: Request, res: Response): Promise<void> {
     const { body } = req
-    if (body.username === undefined || body.password === undefined) {
-      res.sendStatus(422)
+    if (body.username === undefined || body.password === undefined || body.newPassword === undefined) {
+      res.status(422).json({ message: 'Invalid content' })
+      return
+    }
+
+    if (body.username.length < 3) {
+      res.status(422).json({ message: 'Username must have at least 3 characters' })
+      return
+    }
+
+    if (body.password.length < 8) {
+      res.status(422).json({ message: 'Password must have at least 8 characters' })
+      return
+    }
+
+    if (body.newPassword.length < 8) {
+      res.status(422).json({ message: 'New password must have at least 8 characters' })
       return
     }
 
     const data = await this.authRepository.getUserByName(body.username as string) ?? null
     if (data === null || body.newPassword === undefined) {
-      res.sendStatus(400)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
     const valid = await comparePassword(body.password as string, data.password)
     if (!valid) {
-      res.sendStatus(401)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
 
@@ -96,7 +127,7 @@ export class AuthController {
     const user: User = { username: data.username, password: newHashedPassword, role: data.role }
     const status = await this.authRepository.updateUser(user)
     if (status !== 0) {
-      res.sendStatus(500)
+      res.status(501).json({ message: 'Internal server error' })
       return
     }
 
@@ -106,23 +137,31 @@ export class AuthController {
   async delete (req: Request, res: Response): Promise<void> {
     const { body } = req
     if (body.username === undefined || body.password === undefined) {
-      res.sendStatus(422)
+      res.status(422).json({ message: 'Invalid content' })
+      return
+    }
+    if (body.username.length < 3) {
+      res.status(422).json({ message: 'Username must have at least 3 characters' })
+      return
+    }
+    if (body.password.length < 8) {
+      res.status(422).json({ message: 'Password must have at least 8 characters' })
       return
     }
     const user = await this.authRepository.getUserByName(body.username as string) ?? null
     if (user === null) {
-      res.sendStatus(400)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
     const valid = await comparePassword(body.password as string, user.password)
     if (!valid) {
-      res.sendStatus(401)
+      res.status(401).json({ message: 'Invalid username or password' })
       return
     }
 
     const status = await this.authRepository.deleteUser(body.username as string)
     if (status !== 0) {
-      res.sendStatus(400)
+      res.status(500).json({ message: 'Internal server error' })
       return
     }
 
