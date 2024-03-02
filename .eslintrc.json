@@ -8,7 +8,7 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "ignorePatterns": ["temp.ts", "**/vendor/*.ts", "jest.config.ts", "mongodb_data/*"],
+    "ignorePatterns": ["temp.ts", "**/vendor/*.ts", "jest.config.ts", "mongodb_data/*", "mongodb_data_dev/*"],
     "rules": {
     }
 }

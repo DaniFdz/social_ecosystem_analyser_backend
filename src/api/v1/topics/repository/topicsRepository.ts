@@ -40,7 +40,6 @@ export class MongoDBTopicsRepository implements TopicsRepository {
         }
       }) as Topic[]
     }
-    console.log('Topics retrieved')
     return { data }
   }
 
@@ -56,7 +55,6 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       return 1
     }
 
-    console.log(`Topic '${topic.name}' added`)
     return 0
   }
 
@@ -70,7 +68,6 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       console.error(`Error updating topic '${topic.name}'`)
       return 1
     }
-    console.log(`Topic '${topic.name}' updated`)
     return 0
   }
 
@@ -81,7 +78,6 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       console.error(`Topic '${name}' not found`)
       return null
     }
-    console.log(`Topic '${name}' retrieved`)
 
     const topic: Topic = {
       name: result?.name ?? '',
@@ -99,7 +95,6 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       console.error(`Error deleting topic '${name}'`)
       return 1
     }
-    console.log(`Topic '${name}' deleted`)
     return 0
   }
 }

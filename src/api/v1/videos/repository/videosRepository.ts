@@ -44,7 +44,6 @@ export class MongoDBVideosRepository implements VideosRepository {
         }
       }) as VideoData[]
     }
-    console.log('Videos retrieved')
     return { data }
   }
 
@@ -60,19 +59,16 @@ export class MongoDBVideosRepository implements VideosRepository {
       return 1
     }
 
-    console.log(`Video '${video.title}' added`)
     return 0
   }
 
   async getVideoByName (title: string): Promise<VideoData | null> {
     const result = await this.videoCollection
       ?.findOne({ title })
-    console.log(result)
     if (result === null) {
       console.error(`Video '${title}' not found`)
       return null
     }
-    console.log(`Video '${title}' retrieved`)
 
     const video: VideoData = {
       topic: result?.topic ?? '',

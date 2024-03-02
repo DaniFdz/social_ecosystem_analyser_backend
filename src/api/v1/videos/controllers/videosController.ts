@@ -23,7 +23,6 @@ export class VideosController {
       res.sendStatus(401)
       return
     }
-    console.log(req.body)
     const { body } = req
     if (body.title === undefined) {
       res.sendStatus(422)
