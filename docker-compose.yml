@@ -25,5 +25,6 @@ services:
       MONGODB_URI: "mongodb://${MONGODB_USER}:${MONGODB_PASS}@db:27017"
       DB_NAME: ${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN}
     networks:
       - default
