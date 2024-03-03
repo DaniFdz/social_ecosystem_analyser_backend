@@ -10,10 +10,6 @@ export class TopicsController {
   }
 
   async getTopic (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const data = await this.topicsRepository.getTopic()
     res.json(data)
   }

@@ -29,10 +29,6 @@ describe('endpoint /api/v1/topics', () => {
     mockTopicsRepository.resetData()
   })
   describe('GET /api/v1/topics', () => {
-    it('should return 401 if the user is not authenticated', async () => {
-      const response = await request.get('/api/v1/topics')
-      expect(response.status).toBe(401)
-    })
     it('should return 200', async () => {
       const response = (await request.get('/api/v1/topics').set('Authorization', token))
       expect(response.status).toBe(200)
