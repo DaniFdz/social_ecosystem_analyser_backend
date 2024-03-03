@@ -54,8 +54,7 @@ ssh ubuntu@<ip> -i ~/.ssh/droplet_tfg
 
 ## Setup Nginx and cert
 ```bash
-mkdir -p /etc/nginx/ssl
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
+certbot --nginx
 rm /etc/nginx/sites-available/default
 vim /etc/nginx/sites-available/default
 ```
@@ -65,27 +64,39 @@ server {
     listen 80 default_server;
     return 301 https://$host$request_uri;
 }
+
 server {
     listen 443 ssl default_server;
-    server_name localhost;
+    ssl_certificate /etc/letsencrypt/live/api.social-ecosystem-analyser.online/fullchain.pem;
 
-    ssl_certificate /etc/nginx/ssl/nginx.crt;
-    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_certificate_key /etc/letsencrypt/live/api.social-ecosystem-analyser.online/privkey.pem;
 
-        location / {
-        proxy_pass http://localhost:3000;
+    ssl_session_cache shared:le_nginx_SSL:10m;
+    ssl_session_timeout 1440m;
 
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+
+    client_max_body_size 20M;
+
+    location / {
+        proxy_pass http://localhost:3000/;
 
         proxy_http_version 1.1;
-
         proxy_set_header Upgrade $http_upgrade;
-
         proxy_set_header Connection "upgrade";
+
+        proxy_redirect   off;
+
+        proxy_buffering  off;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
     }
 }
 ```
