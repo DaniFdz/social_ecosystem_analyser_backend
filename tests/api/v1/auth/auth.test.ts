@@ -4,12 +4,14 @@ import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
 import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockAuthRepository } from './auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'
+import { MockVirustotalRepository } from '../virustotal/virustotal.mock'
 
 const mockTopicsRepository = new MockTopicsRepository()
 const mockAuthRepository = new MockAuthRepository()
 const mockVideosRepository = new MockVideosRepository()
+const mockVirustotalReporsitory = new MockVirustotalRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory)
 
 const request = supertest(app)
 

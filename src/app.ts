@@ -2,22 +2,25 @@ import { config } from 'dotenv'
 import bodyParser from 'body-parser'
 import cors, { type CorsOptions } from 'cors'
 import express, { type Express } from 'express'
-import { getTopicsRouter } from '@v1/topics/routes/topicsRouter'
-import type { TopicsRepository } from '@v1/topics/repository/topicsRepository'
-import type { AuthRepository } from '@v1/auth/repository/authRepository'
-import { getAuthRouter } from '@v1/auth/routes/authRoutes'
 import { authenticate } from '@/middlewares/authentication'
-import { type VideosRepository } from './api/v1/videos/repository/videosRepository'
-import { getVideosRouter } from './api/v1/videos/routes/videosRouter'
+import type { AuthRepository } from '@v1/auth/repository/authRepository'
+import type { TopicsRepository } from '@v1/topics/repository/topicsRepository'
+import type { VideosRepository } from '@v1/videos/repository/videosRepository'
+import type { VirustotalRepository } from '@v1/virustotal/repository/virustotalRepository'
+import { getAuthRouter } from '@v1/auth/routes/authRoutes'
+import { getTopicsRouter } from '@v1/topics/routes/topicsRouter'
+import { getVideosRouter } from '@v1/videos/routes/videosRouter'
+import { getVirustotalRouter } from '@v1/virustotal/routes/virustotalRouter'
 
 config()
 
-export const getApp = (authRepository: AuthRepository, topicsRepository: TopicsRepository, videosRepository: VideosRepository): Express => {
+export const getApp = (authRepository: AuthRepository, topicsRepository: TopicsRepository, videosRepository: VideosRepository, virustotalRepository: VirustotalRepository): Express => {
   const app: Express = express()
 
   const authRouter = getAuthRouter(authRepository)
   const topicsRouter = getTopicsRouter(topicsRepository)
   const videosRouter = getVideosRouter(videosRepository)
+  const virustotalRouter = getVirustotalRouter(virustotalRepository)
 
   const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:4321'
 
@@ -38,6 +41,7 @@ export const getApp = (authRepository: AuthRepository, topicsRepository: TopicsR
   app.use('/api/v1/auth', authRouter)
   app.use('/api/v1/topics', topicsRouter)
   app.use('/api/v1/videos', videosRouter)
+  app.use('/api/v1/virustotal', virustotalRouter)
 
   return app
 }

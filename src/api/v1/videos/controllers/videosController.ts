@@ -10,7 +10,7 @@ export class VideosController {
   }
 
   async getVideos (req: Request, res: Response): Promise<void> {
-    if (req.role !== 'admin') {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }
@@ -50,7 +50,7 @@ export class VideosController {
   }
 
   async getVideoByName (req: Request, res: Response): Promise<void> {
-    if (req.role !== 'admin') {
+    if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }

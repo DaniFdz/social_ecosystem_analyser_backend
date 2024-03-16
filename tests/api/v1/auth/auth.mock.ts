@@ -24,6 +24,11 @@ export class MockAuthRepository implements AuthRepository {
       if (this.users.find((u) => u.username === user.username) !== undefined) {
         return 1
       }
+
+      if (user.password.length < 8) {
+        return 1
+      }
+
       newId = (parseInt(this.users[this.users.length - 1]._id ?? '0') + 1).toString()
     }
     user._id = newId
