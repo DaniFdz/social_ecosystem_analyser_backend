@@ -13,7 +13,6 @@ export class MockVirustotalRepository implements VirustotalRepository {
 
   addVirustotalReport: (virustotalReport: VirustotalData) => Promise<Status> = jest.fn(async (virustotalReport: VirustotalData) => {
     if (this.data.find((t) => t.url === virustotalReport.url) !== undefined) {
-      console.log(this.data.find((t) => t.url === virustotalReport.url))
       return 1 as Status
     }
     this.data.push(virustotalReport)
