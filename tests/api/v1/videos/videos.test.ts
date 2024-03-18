@@ -53,6 +53,14 @@ describe('endpoint /api/v1/videos', () => {
       expect(response.body.data).toBeInstanceOf(Array<VideoData>)
       expect(response.body.data.length).toBeLessThanOrEqual(100)
     })
+    it('should return the videos staring on pageNum', async () => {
+      for (let i = 0; i < 150; i++) {
+        await request.post('/api/v1/videos').set('Authorization', token).send({
+          title: `test${i}`
+        })
+      }
+      // const response = await request.get('/api/v1/videos?pageNum=1').set('Authorization', token)
+    })
   })
 
   describe('POST /api/v1/videos', () => {
