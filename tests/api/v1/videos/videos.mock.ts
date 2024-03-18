@@ -4,12 +4,19 @@ import { jest } from '@jest/globals'
 
 export class MockVideosRepository implements VideosRepository {
   data: VideoData[] = []
+  pageSize: number = 100
 
   constructor () {
     this.data = []
   }
 
-  getVideos: () => Promise<{ data: VideoData[] }> = jest.fn(async () => ({ data: this.data }))
+  getVideos: (pageNum?: number) => Promise<{ data: VideoData[] }> = jest.fn(async (pageNum?) => {
+    if (pageNum === undefined) {
+      return { data: this.data }
+    } else {
+      return { data: this.data.slice(this.pageSize * (pageNum as number), this.pageSize - 1) }
+    }
+  })
 
   addVideo: (video: VideoData) => Promise<Status> = jest.fn(async (video: VideoData) => {
     if (this.data.find((t) => t.title === video.title) !== undefined) {

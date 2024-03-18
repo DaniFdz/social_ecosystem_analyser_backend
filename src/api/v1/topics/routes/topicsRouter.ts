@@ -9,7 +9,7 @@ export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
   const topicsController = new TopicsController(topicsRepository)
 
   router
-    .get('/', async (req, res) => { await topicsController.getTopic(req, res) })
+    .get('/', async (req, res) => { await topicsController.getTopics(req, res) })
     .post('/', async (req, res) => { await topicsController.postTopic(req, res) })
     .put('/:name', async (req, res) => { await topicsController.putTopic(req, res) })
     .get('/:name', async (req, res) => { await topicsController.getTopicByName(req, res) })

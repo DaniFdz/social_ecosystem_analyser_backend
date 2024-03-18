@@ -4,13 +4,15 @@ import { type Collection, MongoClient } from 'mongodb'
 export type Status = 0 | 1
 
 export abstract class VideosRepository {
-  abstract getVideos: () => Promise<{ data: VideoData[] }>
+  abstract pageSize: number
+  abstract getVideos: (pageNum?: number) => Promise<{ data: VideoData[] }>
   abstract addVideo: (video: VideoData) => Promise<Status>
   abstract getVideoByName: (id: string) => Promise<VideoData | null>
 }
 
 export class MongoDBVideosRepository implements VideosRepository {
   videoCollection: Collection<VideoData> | null = null
+  pageSize: number = 100
 
   constructor () {
     const connection = process.env.MONGODB_URI ?? 'mongodb://admin:admin@localhost:27017/'
@@ -25,8 +27,13 @@ export class MongoDBVideosRepository implements VideosRepository {
       })
   }
 
-  async getVideos (): Promise<{ data: VideoData[] }> {
-    const result = await this.videoCollection?.find().toArray()
+  async getVideos (pageNum?: number): Promise<{ data: VideoData[] }> {
+    let result
+    if (pageNum === undefined) {
+      result = await this.videoCollection?.find().toArray()
+    } else {
+      result = await this.videoCollection?.find().skip(this.pageSize * pageNum).limit(this.pageSize).toArray()
+    }
 
     let data: VideoData[] = []
     if (result !== null) {

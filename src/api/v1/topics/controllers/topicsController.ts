@@ -9,8 +9,8 @@ export class TopicsController {
     this.topicsRepository = topicsRepository
   }
 
-  async getTopic (req: Request, res: Response): Promise<void> {
-    const data = await this.topicsRepository.getTopic()
+  async getTopics (req: Request, res: Response): Promise<void> {
+    const data = await this.topicsRepository.getTopics()
     res.json(data)
   }
 

@@ -78,6 +78,7 @@ describe('endpoint /api/v1/virustotal', () => {
           test: ['test']
         },
         times_submitted: 0,
+        domain: 'string',
         redirection_chain: ['test'],
         trackers: {
           test: [{

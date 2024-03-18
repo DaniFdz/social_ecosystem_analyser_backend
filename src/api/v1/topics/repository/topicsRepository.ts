@@ -4,7 +4,7 @@ import { type Collection, MongoClient } from 'mongodb'
 export type Status = 0 | 1
 
 export abstract class TopicsRepository {
-  abstract getTopic: () => Promise<{ data: Topic[] }>
+  abstract getTopics: () => Promise<{ data: Topic[] }>
   abstract addTopic: (topic: Topic) => Promise<Status>
   abstract updateTopic: (name: string, topic: Topic) => Promise<Status>
   abstract getTopicByName: (name: string) => Promise<Topic | null>
@@ -27,7 +27,7 @@ export class MongoDBTopicsRepository implements TopicsRepository {
       })
   }
 
-  async getTopic (): Promise<{ data: Topic[] }> {
+  async getTopics (): Promise<{ data: Topic[] }> {
     const result = await this.topicCollection?.find().toArray()
 
     let data: Topic[] = []

@@ -9,6 +9,7 @@ export interface VirustotalData {
   trackers: Record<string, Trackers[]>
   threat_names: string[]
   url: string
+  domain: string
   categories: Record<string, string>
   last_analysis_stats: Record<string, number>
   reputation: number

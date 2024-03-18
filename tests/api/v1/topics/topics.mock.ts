@@ -9,7 +9,7 @@ export class MockTopicsRepository implements TopicsRepository {
     this.data = []
   }
 
-  getTopic: () => Promise<{ data: Topic[] }> = jest.fn(async () => ({ data: this.data }))
+  getTopics: () => Promise<{ data: Topic[] }> = jest.fn(async () => ({ data: this.data }))
 
   addTopic: (topic: Topic) => Promise<Status> = jest.fn(async (topic: Topic) => {
     if (this.data.find((t) => t.name === topic.name) !== undefined) {
