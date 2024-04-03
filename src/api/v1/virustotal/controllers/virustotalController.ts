@@ -50,6 +50,6 @@ export class VirustotalController {
       res.sendStatus(404)
       return
     }
-    res.json(virustotalReport)
+    res.status(200).json(virustotalReport)
   }
 }
