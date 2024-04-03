@@ -14,7 +14,7 @@ export class MockVideosRepository implements VideosRepository {
     if (pageNum === undefined) {
       return { data: this.data }
     } else {
-      return { data: this.data.slice(this.pageSize * (pageNum as number), this.pageSize - 1) }
+      return { data: this.data.slice(this.pageSize * (pageNum as number), this.pageSize * (pageNum as number + 1)) }
     }
   })
 

@@ -43,23 +43,16 @@ describe('endpoint /api/v1/videos', () => {
       const response = await request.get('/api/v1/videos').set('Authorization', token)
       expect(response.body.data).toBeInstanceOf(Array<VideoData>)
     })
-    it('should limit the number of videos to 100', async () => {
-      for (let i = 0; i < 150; i++) {
+    it('should limit the number of videos to 100 and start with element 100', async () => {
+      for (let i = 0; i < 250; i++) {
         await request.post('/api/v1/videos').set('Authorization', token).send({
           title: `test${i}`
         })
       }
-      const response = await request.get('/api/v1/videos?pageNum=0').set('Authorization', token)
+      const response = await request.get('/api/v1/videos?pageNum=1').set('Authorization', token)
       expect(response.body.data).toBeInstanceOf(Array<VideoData>)
-      expect(response.body.data.length).toBeLessThanOrEqual(100)
-    })
-    it('should return the videos staring on pageNum', async () => {
-      for (let i = 0; i < 150; i++) {
-        await request.post('/api/v1/videos').set('Authorization', token).send({
-          title: `test${i}`
-        })
-      }
-      // const response = await request.get('/api/v1/videos?pageNum=1').set('Authorization', token)
+      expect(response.body.data.length).toBe(100)
+      expect(response.body.data[0].title).toBe('test100')
     })
   })
 
