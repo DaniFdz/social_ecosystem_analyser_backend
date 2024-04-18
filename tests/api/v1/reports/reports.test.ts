@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getApp } from '@/app'
 import supertest from 'supertest'
 import { describe, it, expect, afterEach, beforeAll } from '@jest/globals'
-import { type GeneralReport } from '@v1/reports/models/reportsInterface'
 import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'
@@ -20,87 +18,100 @@ const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepositor
 const request = supertest(app)
 
 let adminToken: string
-let guestToken: string
 
 describe('endpoint /api/v1/reports', () => {
-  it('should return 1', () => {
-    expect(1).toBe(1)
+  beforeAll(async () => {
+    const response = await request.post('/api/v1/auth/register').send({
+      username: 'admin',
+      password: 'admin123'
+    })
+    adminToken = `Bearer ${response.body.token}`
   })
-  // beforeAll(async () => {
-  //   const response = await request.post('/api/v1/auth/login').send({
-  //     username: 'admin',
-  //     password: 'admin123'
-  //   })
-  //   adminToken = `Bearer ${response.body.token}`
-  //   const response2 = await request.post('/api/v1/auth/login').send({
-  //     username: 'guest',
-  //     password: 'guest123'
-  //   })
-  //   guestToken = `Bearer ${response2.body.token}`
-  // })
 
-  // afterEach(() => {
-  //   mockTopicsRepository.resetData()
-  // })
-  // describe('GET /api/v1/reports', () => {
-  //   it('should return 401 if the user is not authenticated', async () => {
-  //     const response = await request.get('/api/v1/reports')
-  //     expect(response.status).toBe(401)
-  //   })
-  //   it('should return 200 when logged as guest', async () => {
-  //     const response = (await request.get('/api/v1/reports').set('Authorization', guestToken))
-  //     expect(response.status).toBe(200)
-  //   })
-  //   it('should return an array inside data object when logged as guest', async () => {
-  //     const response = await request.get('/api/v1/reports').set('Authorization', guestToken)
-  //     expect(response.body.data).toBeInstanceOf(Array<GeneralReport>)
-  //   })
-  // })
-  // describe('POST /api/v1/reports', () => {
-  //   it('should return 401 if the user is not authenticated', async () => {
-  //     const response = await request.post('/api/v1/reports').send({
-  //       name: 'test'
-  //     })
-  //     expect(response.status).toBe(401)
-  //   })
-  //   it('should return 403 when logged as guest', async () => {
-  //     const response = await request.post('/api/v1/reports').set('Authorization', guestToken).send({
-  //       name: 'test'
-  //     })
-  //     expect(response.status).toBe(403)
-  //   })
-  //   it('should return 422 if the request body is not correct', async () => {
-  //     const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-  //       notAValidArgument: 'test'
-  //     })
-  //     expect(response.status).toBe(422)
-  //   })
-  //   it('should return 500 if the report could not be added', async () => {
-  //     await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-  //       link: 'test',
-  //       topic: 'test',
-  //       view_count: 0,
-  //       like_count: 0,
-  //       urls_report: []
-  //     })
-  //     const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-  //       link: 'test',
-  //       topic: 'test',
-  //       view_count: 0,
-  //       like_count: 0,
-  //       urls_report: []
-  //     })
-  //     expect(response.status).toBe(500)
-  //   })
-  //   it('should return 201 if the report was added', async () => {
-  //     const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-  //       link: 'test',
-  //       topic: 'test',
-  //       view_count: 0,
-  //       like_count: 0,
-  //       urls_report: []
-  //     })
-  //     expect(response.status).toBe(201)
-  //   })
-  // })
+  afterEach(() => {
+    mockTopicsRepository.resetData()
+  })
+  describe('GET /api/v1/reports/:video_url', () => {
+    beforeAll(async () => {
+      await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+        link: 'test_url',
+        topic: 'test',
+        title: 'test',
+        description: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_reports: []
+      })
+    })
+    it('should return 401 if the user is not authenticated', async () => {
+      const response = await request.get('/api/v1/reports/test')
+      expect(response.status).toBe(401)
+    })
+    it('should return 404 if the video_url is not found', async () => {
+      const response = await request.get('/api/v1/reports/doesntexist').set('Authorization', adminToken)
+      expect(response.status).toBe(404)
+    })
+    it('should return 200 if the user is authenticated and the link exists', async () => {
+      const response = await request.get('/api/v1/reports/test_url').set('Authorization', adminToken)
+      expect(response.status).toBe(200)
+    })
+  })
+  describe('POST /api/v1/reports', () => {
+    it('should return 401 if the user is not authenticated', async () => {
+      const response = await request.post('/api/v1/reports').send({
+        link: 'test',
+        topic: 'test',
+        title: 'test',
+        description: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_report: []
+      })
+      expect(response.status).toBe(401)
+    })
+    it('should return 422 if the request body is missing a field', async () => {
+      const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+        link: 'test',
+        topic: 'test',
+        title: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_reports: []
+      })
+      expect(response.status).toBe(422)
+    })
+    it('should return 201 if the request body is correct', async () => {
+      const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+        link: 'test',
+        topic: 'test',
+        title: 'test',
+        description: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_reports: []
+      })
+      expect(response.status).toBe(201)
+    })
+    it('it should return 409 if the link already exists', async () => {
+      await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+        link: 'test',
+        topic: 'test',
+        title: 'test',
+        description: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_reports: []
+      })
+      const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+        link: 'test',
+        topic: 'test',
+        title: 'test',
+        description: 'test',
+        view_count: 0,
+        like_count: 0,
+        urls_reports: []
+      })
+      expect(response.status).toBe(409)
+    })
+  })
 })

@@ -22,7 +22,7 @@ let adminToken: string
 
 describe('endpoint /api/v1/topics', () => {
   beforeAll(async () => {
-    const response = await request.post('/api/v1/auth/login').send({
+    const response = await request.post('/api/v1/auth/register').send({
       username: 'admin',
       password: 'admin123'
     })

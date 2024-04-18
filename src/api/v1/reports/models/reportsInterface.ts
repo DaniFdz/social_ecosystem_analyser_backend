@@ -9,6 +9,8 @@ export interface URLReport {
 export interface GeneralReport {
   link: string
   topic: string
+  title: string
+  description: string
   view_count: number
   like_count: number
   urls_reports: URLReport[]

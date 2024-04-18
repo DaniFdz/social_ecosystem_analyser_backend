@@ -1,40 +1,16 @@
 import type { User } from '@v1/auth/models/authInterface'
 import type { AuthRepository, Status } from '@v1/auth/repository/authRepository'
 import { jest } from '@jest/globals'
-import { hashPassword } from '@/lib/cryptography'
 
 export class MockAuthRepository implements AuthRepository {
   users: User[] = []
 
   constructor () {
-    this.resetData()
+    this.users = []
   }
 
   resetData = (): void => {
-    const admin: User = {
-      _id: '0',
-      username: 'admin',
-      password: 'admin123',
-      role: 'admin'
-    }
-    const guest: User = {
-      _id: '1',
-      username: 'guest',
-      password: 'guest123',
-      role: 'guest'
-    }
-    hashPassword(admin.password).then((hash) => {
-      admin.password = hash
-    }).catch((err) => {
-      console.error(err)
-    })
-    hashPassword(guest.password).then((hash) => {
-      guest.password = hash
-    }).catch((err) => {
-      console.error(err)
-    })
-
-    this.users = [admin, guest]
+    this.users = []
   }
 
   getUserByName = jest.fn(async (username: string) => {

@@ -9,7 +9,7 @@ export function getReportsRouter (reportsRepository: ReportsRepository): Router 
   const reportsController = new ReportsController(reportsRepository)
 
   router
-    .get('/', async (req, res) => { await reportsController.getReports(req, res) })
+    .get('/:video_url', async (req, res) => { await reportsController.getReports(req, res) })
     .post('/', async (req, res) => { await reportsController.addReport(req, res) })
   return router
 }

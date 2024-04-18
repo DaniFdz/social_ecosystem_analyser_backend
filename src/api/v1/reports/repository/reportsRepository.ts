@@ -1,10 +1,10 @@
-import { type GeneralReport } from '@v1/reports/models/reportsInterface'
+import type { GeneralReport, URLReport } from '@v1/reports/models/reportsInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
-export type Status = 0 | 1
+export type Status = 0 | 1 | 2
 
 export abstract class ReportsRepository {
-  abstract getReports: () => Promise<{ data: GeneralReport[] }>
+  abstract getReportByUrl: (url: string) => Promise<GeneralReport | null>
   abstract addReport: (report: GeneralReport) => Promise<Status>
 }
 
@@ -24,23 +24,32 @@ export class MongoDBReportsRepository implements ReportsRepository {
       })
   }
 
-  async getReports (): Promise<{ data: GeneralReport[] }> {
-    const result = await this.reportsCollection?.find().toArray()
-    let data: GeneralReport[] = []
-    if (result != null) {
-      data = result?.map((report) => {
-        return {
-          link: report.link,
-          topic: report.topic,
-          title: report.title,
-          description: report.description,
-          view_count: report.view_count,
-          like_count: report.like_count,
-          urls_reports: report.urls_reports
-        } satisfies GeneralReport
-      }) as GeneralReport[]
+  async getReportByUrl (url: string): Promise<GeneralReport | null> {
+    const result = await this.reportsCollection?.findOne({ link: url })
+    if (result == null) {
+      console.error(`URL '${url}' not found`)
+      return null
     }
-    return { data }
+
+    const topic: GeneralReport = {
+      link: result.link,
+      topic: result.topic,
+      title: result.title,
+      description: result.description,
+      view_count: result.view_count,
+      like_count: result.like_count,
+      urls_reports: result.urls_reports.map((url) => {
+        return {
+          redirection_chain: url.redirection_chain,
+          categories: url.categories,
+          last_analysis_stats: url.last_analysis_stats,
+          reputation: url.reputation,
+          result: url.result
+        } satisfies URLReport
+      })
+    } satisfies GeneralReport
+
+    return topic
   }
 
   async addReport (report: GeneralReport): Promise<Status> {
@@ -52,7 +61,7 @@ export class MongoDBReportsRepository implements ReportsRepository {
     const result = await this.reportsCollection?.insertOne(report)
     if (result?.insertedId === undefined) {
       console.error(`Error adding report '${report.link}'`)
-      return 1
+      return 2
     }
 
     return 0
