@@ -1,7 +1,7 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
 import { describe, it, expect, afterEach, beforeAll } from '@jest/globals'
-import { type Topic } from '@v1/topics/repository/topicsInterface'
+import { type Topic } from '@v1/topics/models/topicsInterface'
 import { MockTopicsRepository } from './topics.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'

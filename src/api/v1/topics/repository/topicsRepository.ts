@@ -1,4 +1,4 @@
-import { type Topic } from '@v1/topics/repository/topicsInterface'
+import { type Topic } from '@v1/topics/models/topicsInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1

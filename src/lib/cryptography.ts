@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import type { Role } from '@v1/auth/repository/authInterface'
+import type { Role } from '@v1/auth/models/authInterface'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'secret'
 

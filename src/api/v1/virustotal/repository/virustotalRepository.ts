@@ -1,4 +1,4 @@
-import { type VirustotalData } from '@v1/virustotal/repository/virustotalInterface'
+import { type VirustotalData } from '@v1/virustotal/models/virustotalInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1

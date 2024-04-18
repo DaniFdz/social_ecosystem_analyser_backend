@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { type VirustotalRepository } from '@v1/virustotal/repository/virustotalRepository'
-import { type VirustotalData } from '@v1/virustotal/repository/virustotalInterface'
+import { type VirustotalData } from '@v1/virustotal/models/virustotalInterface'
 
 export class VirustotalController {
   virustotalRepository: VirustotalRepository

@@ -1,7 +1,7 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
 import { describe, it, expect, afterEach, beforeAll } from '@jest/globals'
-import { type VideoData } from '@v1/videos/repository/videosInterface'
+import { type VideoData } from '@v1/videos/models/videosInterface'
 import { MockVideosRepository } from './videos.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockTopicsRepository } from '../topics/topics.mock'

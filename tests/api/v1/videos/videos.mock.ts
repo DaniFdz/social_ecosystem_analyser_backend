@@ -1,4 +1,4 @@
-import { type VideoData } from '@v1/videos/repository/videosInterface'
+import { type VideoData } from '@v1/videos/models/videosInterface'
 import { type Status, type VideosRepository } from '@v1/videos/repository/videosRepository'
 import { jest } from '@jest/globals'
 

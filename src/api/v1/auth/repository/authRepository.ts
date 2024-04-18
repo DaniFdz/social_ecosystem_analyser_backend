@@ -1,4 +1,4 @@
-import { type User } from '@v1/auth/repository/authInterface'
+import { type User } from '@v1/auth/models/authInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1

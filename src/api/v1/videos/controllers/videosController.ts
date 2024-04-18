@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { type VideosRepository } from '@v1/videos/repository/videosRepository'
-import { type VideoData } from '@v1/videos/repository/videosInterface'
+import { type VideoData } from '@v1/videos/models/videosInterface'
 
 export class VideosController {
   videosRepository: VideosRepository

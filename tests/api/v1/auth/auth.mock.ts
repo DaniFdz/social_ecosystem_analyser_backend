@@ -1,4 +1,4 @@
-import type { User } from '@v1/auth/repository/authInterface'
+import type { User } from '@v1/auth/models/authInterface'
 import type { AuthRepository, Status } from '@v1/auth/repository/authRepository'
 import { jest } from '@jest/globals'
 

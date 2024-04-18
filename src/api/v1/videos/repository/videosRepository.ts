@@ -1,4 +1,4 @@
-import { type VideoData } from '@v1/videos/repository/videosInterface'
+import { type VideoData } from '@v1/videos/models/videosInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1

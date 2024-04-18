@@ -5,7 +5,7 @@ import { MockVideosRepository } from '../videos/videos.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockVirustotalRepository } from './virustotal.mock'
-import { type VirustotalData } from '@/api/v1/virustotal/repository/virustotalInterface'
+import { type VirustotalData } from '@/api/v1/virustotal/models/virustotalInterface'
 
 const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
