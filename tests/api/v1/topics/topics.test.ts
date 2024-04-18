@@ -6,25 +6,27 @@ import { MockTopicsRepository } from './topics.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'
 import { MockVirustotalRepository } from '../virustotal/virustotal.mock'
+import { MockReportsRepository } from '../reports/reports.mock'
 
 const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
 const mockVideosRepository = new MockVideosRepository()
 const mockVirustotalReporsitory = new MockVirustotalRepository()
+const mockReportsRepository = new MockReportsRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory, mockReportsRepository)
 
 const request = supertest(app)
 
-let token: string
+let adminToken: string
 
 describe('endpoint /api/v1/topics', () => {
   beforeAll(async () => {
-    const response = await request.post('/api/v1/auth/register').send({
-      username: 'test',
-      password: 'testtest'
+    const response = await request.post('/api/v1/auth/login').send({
+      username: 'admin',
+      password: 'admin123'
     })
-    token = `Bearer ${response.body.token}`
+    adminToken = `Bearer ${response.body.token}`
   })
 
   afterEach(() => {
@@ -32,11 +34,11 @@ describe('endpoint /api/v1/topics', () => {
   })
   describe('GET /api/v1/topics', () => {
     it('should return 200', async () => {
-      const response = (await request.get('/api/v1/topics').set('Authorization', token))
+      const response = (await request.get('/api/v1/topics').set('Authorization', adminToken))
       expect(response.status).toBe(200)
     })
     it('should return an array inside data object', async () => {
-      const response = await request.get('/api/v1/topics').set('Authorization', token)
+      const response = await request.get('/api/v1/topics').set('Authorization', adminToken)
       expect(response.body.data).toBeInstanceOf(Array<Topic>)
     })
   })
@@ -49,22 +51,22 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(401)
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.post('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         notAValidArgument: 'test'
       })
       expect(response.status).toBe(422)
     })
     it('should return 500 if the topic could not be added', async () => {
-      await request.post('/api/v1/topics').set('Authorization', token).send({
+      await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
-      const response = await request.post('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
       expect(response.status).toBe(500)
     })
     it('should return 201 if the topic was added', async () => {
-      const response = await request.post('/api/v1/topics').set('Authorization', token).send({
+      const response = await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
       expect(response.status).toBe(201)
@@ -81,7 +83,7 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(401)
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         notAValidArgument: 'test',
         finished: true,
         next_page_token: ''
@@ -89,7 +91,7 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(422)
     })
     it('should return 404 if the topic was not found', async () => {
-      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
         next_page_token: ''
@@ -97,16 +99,16 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(404)
     })
     it('should return 200 if the topic was updated', async () => {
-      await request.post('/api/v1/topics').set('Authorization', token).send({
+      await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
-      const response = await request.put('/api/v1/topics/test').set('Authorization', token).send({
+      const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
         next_page_token: ''
       })
       expect(response.status).toBe(200)
-      const response2 = await request.put('/api/v1/topics/test').set('Authorization', token).send({
+      const response2 = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
         next_page_token: 'pepe'
@@ -121,21 +123,21 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(401)
     })
     it('should return 404 if the topic was not found', async () => {
-      const response = await request.get('/api/v1/topics/test').set('Authorization', token)
+      const response = await request.get('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.status).toBe(404)
     })
     it('should return 200 if the topic was found', async () => {
-      await request.post('/api/v1/topics').set('Authorization', token).send({
+      await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
-      const response = await request.get('/api/v1/topics/test').set('Authorization', token)
+      const response = await request.get('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.status).toBe(200)
     })
     it('should return the topic', async () => {
-      await request.post('/api/v1/topics').set('Authorization', token).send({
+      await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
-      const response = await request.get('/api/v1/topics/test').set('Authorization', token)
+      const response = await request.get('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.body.name).toBe('test')
       expect(response.body.finished).toBe(false)
       expect(response.body.next_page_token).toBe('')
@@ -148,14 +150,14 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.status).toBe(401)
     })
     it('should return 404 if the topic was not found', async () => {
-      const response = await request.delete('/api/v1/topics/test').set('Authorization', token)
+      const response = await request.delete('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.status).toBe(404)
     })
     it('should return 200 if the topic was deleted', async () => {
-      await request.post('/api/v1/topics').set('Authorization', token).send({
+      await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'
       })
-      const response = await request.delete('/api/v1/topics/test').set('Authorization', token)
+      const response = await request.delete('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.status).toBe(200)
     })
   })

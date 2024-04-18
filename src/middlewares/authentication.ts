@@ -16,7 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET ?? 'secret'
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization?.split(' ').pop()
   req.role = 'guest'
-  if (token !== undefined) {
+  if (token != null) {
     try {
       const { role } = jwt.verify(token, JWT_SECRET) as Payload
       req.role = role

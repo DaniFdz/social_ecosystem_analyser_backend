@@ -5,13 +5,15 @@ import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockAuthRepository } from './auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'
 import { MockVirustotalRepository } from '../virustotal/virustotal.mock'
+import { MockReportsRepository } from '../reports/reports.mock'
 
-const mockTopicsRepository = new MockTopicsRepository()
 const mockAuthRepository = new MockAuthRepository()
+const mockTopicsRepository = new MockTopicsRepository()
 const mockVideosRepository = new MockVideosRepository()
 const mockVirustotalReporsitory = new MockVirustotalRepository()
+const mockReportsRepository = new MockReportsRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory, mockReportsRepository)
 
 const request = supertest(app)
 

@@ -31,7 +31,7 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     const result = await this.topicCollection?.find().toArray()
 
     let data: Topic[] = []
-    if (result !== null) {
+    if (result != null) {
       data = result?.map((topic) => {
         return {
           name: topic.name,
@@ -44,7 +44,7 @@ export class MongoDBTopicsRepository implements TopicsRepository {
   }
 
   async addTopic (topic: Topic): Promise<Status> {
-    if (await this.topicCollection?.findOne({ name: topic.name }) !== null) {
+    if (await this.topicCollection?.findOne({ name: topic.name }) != null) {
       console.error(`Topic '${topic.name}' already exists`)
       return 1
     }

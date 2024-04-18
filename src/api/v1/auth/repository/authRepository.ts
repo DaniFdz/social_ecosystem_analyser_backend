@@ -33,7 +33,7 @@ export class MongoDBAuthRepository implements AuthRepository {
 
   async createUser (user: User): Promise<Status> {
     const userExists = await this.authCollection?.findOne({ username: user.username })
-    if (userExists !== null) {
+    if (userExists != null) {
       return 1
     }
     const status = await this.authCollection?.insertOne(user)

@@ -5,26 +5,28 @@ import { MockVideosRepository } from '../videos/videos.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockVirustotalRepository } from './virustotal.mock'
+import { MockReportsRepository } from '../reports/reports.mock'
 import { type VirustotalData } from '@/api/v1/virustotal/models/virustotalInterface'
 
 const mockAuthRepository = new MockAuthRepository()
 const mockTopicsRepository = new MockTopicsRepository()
 const mockVideosRepository = new MockVideosRepository()
 const mockVirustotalReporsitory = new MockVirustotalRepository()
+const mockReportsRepository = new MockReportsRepository()
 
-const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory)
+const app = getApp(mockAuthRepository, mockTopicsRepository, mockVideosRepository, mockVirustotalReporsitory, mockReportsRepository)
 
 const request = supertest(app)
 
-let token: string
+let adminToken: string
 
 describe('endpoint /api/v1/virustotal', () => {
   beforeAll(async () => {
-    const response = await request.post('/api/v1/auth/register').send({
-      username: 'test',
-      password: 'testtest'
+    const response = await request.post('/api/v1/auth/login').send({
+      username: 'admin',
+      password: 'admin123'
     })
-    token = `Bearer ${response.body.token}`
+    adminToken = `Bearer ${response.body.token}`
   })
 
   afterEach(() => {
@@ -37,11 +39,11 @@ describe('endpoint /api/v1/virustotal', () => {
       expect(response.status).toBe(401)
     })
     it('should return 200', async () => {
-      const response = (await request.get('/api/v1/virustotal').set('Authorization', token))
+      const response = (await request.get('/api/v1/virustotal').set('Authorization', adminToken))
       expect(response.status).toBe(200)
     })
     it('should return an array inside data object', async () => {
-      const response = await request.get('/api/v1/virustotal').set('Authorization', token)
+      const response = await request.get('/api/v1/virustotal').set('Authorization', adminToken)
       expect(response.body.data).toBeInstanceOf(Array<VirustotalData>)
     })
   })
@@ -54,22 +56,22 @@ describe('endpoint /api/v1/virustotal', () => {
       expect(response.status).toBe(401)
     })
     it('should return 422 if the request body is not correct', async () => {
-      const response = await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      const response = await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         notAValidArgument: 'test'
       })
       expect(response.status).toBe(422)
     })
     it('should return 500 if the virustotal report could not be added', async () => {
-      await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
-      const response = await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      const response = await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
       expect(response.status).toBe(500)
     })
     it('should return 201 if the virustotal report was added', async () => {
-      const response = await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      const response = await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         first_submission_date: 0,
         last_modification_date: 0,
         last_http_response_content_length: 0,
@@ -111,21 +113,21 @@ describe('endpoint /api/v1/virustotal', () => {
       expect(response.status).toBe(401)
     })
     it('should return 404 if the virustotal report was not found', async () => {
-      const response = await request.get('/api/v1/virustotal/testtest').set('Authorization', token)
+      const response = await request.get('/api/v1/virustotal/testtest').set('Authorization', adminToken)
       expect(response.status).toBe(404)
     })
     it('should return 200 if the virustotal report was found', async () => {
-      await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
-      const response = await request.get('/api/v1/virustotal/test').set('Authorization', token)
+      const response = await request.get('/api/v1/virustotal/test').set('Authorization', adminToken)
       expect(response.status).toBe(200)
     })
     it('should return the virustotal report', async () => {
-      await request.post('/api/v1/virustotal').set('Authorization', token).send({
+      await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
-      const response = await request.get('/api/v1/virustotal/test').set('Authorization', token)
+      const response = await request.get('/api/v1/virustotal/test').set('Authorization', adminToken)
       expect(response.body.url).toBe('test')
     })
   })

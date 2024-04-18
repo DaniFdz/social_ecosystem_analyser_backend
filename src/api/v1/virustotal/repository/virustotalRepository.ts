@@ -29,14 +29,14 @@ export class MongoDBVirustotalRepository implements VirustotalRepository {
     const result = await this.virustotalCollection?.find().toArray()
 
     let data: VirustotalData[] = []
-    if (result !== null) {
+    if (result != null) {
       data = result as VirustotalData[]
     }
     return { data }
   }
 
   async addVirustotalReport (virustotalReport: VirustotalData): Promise<Status> {
-    if (await this.virustotalCollection?.findOne({ url: virustotalReport.url }) !== null) {
+    if (await this.virustotalCollection?.findOne({ url: virustotalReport.url }) != null) {
       console.error(`Virustotal Report '${virustotalReport.url}' already exists`)
       return 1
     }

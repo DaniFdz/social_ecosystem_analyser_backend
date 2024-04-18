@@ -36,7 +36,7 @@ export class MongoDBVideosRepository implements VideosRepository {
     }
 
     let data: VideoData[] = []
-    if (result !== null) {
+    if (result != null) {
       data = result?.map((video) => {
         return {
           topic: video.topic,
@@ -55,7 +55,7 @@ export class MongoDBVideosRepository implements VideosRepository {
   }
 
   async addVideo (video: VideoData): Promise<Status> {
-    if (await this.videoCollection?.findOne({ title: video.title }) !== null) {
+    if (await this.videoCollection?.findOne({ title: video.title }) != null) {
       console.error(`Video '${video.title}' already exists`)
       return 1
     }

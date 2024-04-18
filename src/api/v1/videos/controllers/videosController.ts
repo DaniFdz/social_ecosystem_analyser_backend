@@ -14,7 +14,7 @@ export class VideosController {
       res.sendStatus(401)
       return
     }
-    const data = req.query.pageNum !== undefined
+    const data = req.query.pageNum != null
       ? await this.videosRepository.getVideos(parseInt(req.query.pageNum as string))
       : await this.videosRepository.getVideos()
     res.json(data)
