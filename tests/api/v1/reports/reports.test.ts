@@ -1,6 +1,6 @@
 import { getApp } from '@/app'
 import supertest from 'supertest'
-import { describe, it, expect, afterEach, beforeAll } from '@jest/globals'
+import { describe, it, expect, afterEach, beforeAll, beforeEach } from '@jest/globals'
 import { MockTopicsRepository } from '../topics/topics.mock'
 import { MockAuthRepository } from '../auth/auth.mock'
 import { MockVideosRepository } from '../videos/videos.mock'
@@ -29,10 +29,10 @@ describe('endpoint /api/v1/reports', () => {
   })
 
   afterEach(() => {
-    mockTopicsRepository.resetData()
+    mockReportsRepository.resetData()
   })
   describe('GET /api/v1/reports/:video_url', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       await request.post('/api/v1/reports').set('Authorization', adminToken).send({
         link: 'test_url',
         topic: 'test',
@@ -114,4 +114,78 @@ describe('endpoint /api/v1/reports', () => {
       expect(response.status).toBe(409)
     })
   })
+  // describe('GET /api/v1/reports/topic/:topic_name', () => {
+  //   beforeAll(async () => {
+  //     await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+  //       link: 'test_url',
+  //       topic: 'topic_test',
+  //       title: 'test',
+  //       description: 'test',
+  //       view_count: 0,
+  //       like_count: 0,
+  //       urls_reports: [
+  //         {
+  //           redirection_chain: ['https://example.com', 'https://example1.com'],
+  //           categories: {
+  //             Malware: '0',
+  //             Phishing: '0',
+  //             Spam: '1',
+  //             'Potentially Unwanted Programs': '0',
+  //             Harmless: '0'
+  //           },
+  //           last_analysis_stats: {
+  //             Malware: 0,
+  //             Phishing: 0,
+  //             Spam: 1,
+  //             'Potentially Unwanted Programs': 0,
+  //             Harmless: 0
+  //           },
+  //           reputation: 90,
+  //           result: 10
+  //         }
+  //       ]
+  //     })
+  //     await request.post('/api/v1/reports').set('Authorization', adminToken).send({
+  //       link: 'test_url2',
+  //       topic: 'topic_test',
+  //       title: 'test',
+  //       description: 'test',
+  //       view_count: 10,
+  //       like_count: 10,
+  //       urls_reports: [
+  //         {
+  //           redirection_chain: ['https://example.com', 'https://example1.com'],
+  //           categories: {
+  //             Malware: '0',
+  //             Phishing: '0',
+  //             Spam: '1',
+  //             'Potentially Unwanted Programs': '0',
+  //             Harmless: '0'
+  //           },
+  //           last_analysis_stats: {
+  //             Malware: 1,
+  //             Phishing: 0,
+  //             Spam: 1,
+  //             'Potentially Unwanted Programs': 0,
+  //             Harmless: 0
+  //           },
+  //           reputation: 10,
+  //           result: 0
+  //         }
+  //       ]
+  //     })
+  //   })
+  // it('should return 401 if the user is not authenticated', async () => {
+  //   const response = await request.get('/api/v1/reports/topic/topic_test')
+  //   expect(response.status).toBe(401)
+  // })
+  // it('should return 404 if the topic does not exist', async () => {
+  //   const response = await request.get('/api/v1/reports/topic/doesntexist').set('Authorization', adminToken)
+  //   expect(response.status).toBe(404)
+  // })
+  // it('should return 200 if the user is authenticated and the topic exists', async () => {
+  //   const response = await request.get('/api/v1/reports/topic/topic_test').set('Authorization', adminToken)
+  //   expect(response.status).toBe(200)
+  // })
+  // })
 })

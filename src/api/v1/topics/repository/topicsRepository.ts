@@ -36,7 +36,8 @@ export class MongoDBTopicsRepository implements TopicsRepository {
         return {
           name: topic.name,
           finished: topic.finished,
-          next_page_token: topic.next_page_token
+          next_page_token: topic.next_page_token,
+          type: topic.type
         }
       }) as Topic[]
     }
@@ -82,7 +83,8 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     const topic: Topic = {
       name: result?.name ?? '',
       finished: result?.finished ?? false,
-      next_page_token: result?.next_page_token ?? ''
+      next_page_token: result?.next_page_token ?? '',
+      type: result?.type ?? 'topic'
     }
 
     return topic

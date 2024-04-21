@@ -78,7 +78,8 @@ describe('endpoint /api/v1/topics', () => {
       const response = await request.put('/api/v1/topics/test').send({
         name: 'test',
         finished: true,
-        next_page_token: ''
+        next_page_token: '',
+        type: 'topic'
       })
       expect(response.status).toBe(401)
     })
@@ -86,7 +87,8 @@ describe('endpoint /api/v1/topics', () => {
       const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         notAValidArgument: 'test',
         finished: true,
-        next_page_token: ''
+        next_page_token: '',
+        type: 'topic'
       })
       expect(response.status).toBe(422)
     })
@@ -94,7 +96,8 @@ describe('endpoint /api/v1/topics', () => {
       const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
-        next_page_token: ''
+        next_page_token: '',
+        type: 'topic'
       })
       expect(response.status).toBe(404)
     })
@@ -105,13 +108,15 @@ describe('endpoint /api/v1/topics', () => {
       const response = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
-        next_page_token: ''
+        next_page_token: '',
+        type: 'topic'
       })
       expect(response.status).toBe(200)
       const response2 = await request.put('/api/v1/topics/test').set('Authorization', adminToken).send({
         name: 'test',
         finished: true,
-        next_page_token: 'pepe'
+        next_page_token: 'pepe',
+        type: 'url'
       })
       expect(response2.status).toBe(200)
     })
@@ -141,6 +146,7 @@ describe('endpoint /api/v1/topics', () => {
       expect(response.body.name).toBe('test')
       expect(response.body.finished).toBe(false)
       expect(response.body.next_page_token).toBe('')
+      expect(response.body.type).toBe('topic')
     })
   })
 
