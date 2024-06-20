@@ -22,7 +22,7 @@ export const comparePassword = async (password: string, hash: string): Promise<b
 }
 
 export const generateToken = (payload: Payload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' })
+  return jwt.sign(payload, JWT_SECRET)
 }
 
 export const verifyToken = (token: string): Payload | null => {

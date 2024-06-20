@@ -36,6 +36,7 @@ export class MongoDBReportsRepository implements ReportsRepository {
       topic: result.topic,
       title: result.title,
       description: result.description,
+      published_at: result.published_at,
       view_count: result.view_count,
       like_count: result.like_count,
       urls_reports: result.urls_reports.map((url) => {

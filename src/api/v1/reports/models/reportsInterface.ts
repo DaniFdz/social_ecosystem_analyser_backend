@@ -11,6 +11,7 @@ export interface GeneralReport {
   topic: string
   title: string
   description: string
+  published_at: string
   view_count: number
   like_count: number
   urls_reports: URLReport[]

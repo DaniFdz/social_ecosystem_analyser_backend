@@ -47,6 +47,7 @@ export class ReportsController {
       topic: req.body.topic,
       title: req.body.title,
       description: req.body.description,
+      published_at: req.body.published_at,
       view_count: req.body.view_count,
       like_count: req.body.like_count,
       urls_reports: urlsReports
