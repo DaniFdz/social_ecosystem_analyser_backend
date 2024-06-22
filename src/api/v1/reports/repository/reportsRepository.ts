@@ -4,7 +4,7 @@ import { type Collection, MongoClient } from 'mongodb'
 export type Status = 0 | 1 | 2
 
 export abstract class ReportsRepository {
-  abstract getReportByUrl: (url: string) => Promise<GeneralReport | null>
+  abstract getReportById: (id: string) => Promise<GeneralReport | null>
   abstract addReport: (report: GeneralReport) => Promise<Status>
 }
 
@@ -24,10 +24,10 @@ export class MongoDBReportsRepository implements ReportsRepository {
       })
   }
 
-  async getReportByUrl (url: string): Promise<GeneralReport | null> {
-    const result = await this.reportsCollection?.findOne({ id: url })
+  async getReportById (id: string): Promise<GeneralReport | null> {
+    const result = await this.reportsCollection?.findOne({ id })
     if (result == null) {
-      console.error(`URL '${url}' not found`)
+      console.error(`Report '${id}' not found`)
       return null
     }
 

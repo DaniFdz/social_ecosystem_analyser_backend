@@ -9,8 +9,8 @@ export class MockReportsRepository implements ReportsRepository {
     this.data = []
   }
 
-  getReportByUrl: (url: string) => Promise<GeneralReport | null> = jest.fn(async (url: string) => {
-    const report = this.data.find((report) => report.id === url)
+  getReportById: (id: string) => Promise<GeneralReport | null> = jest.fn(async (id: string) => {
+    const report = this.data.find((report) => report.id === id)
     return report ?? null
   })
 

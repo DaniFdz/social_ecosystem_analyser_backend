@@ -15,8 +15,8 @@ export class ReportsController {
       res.sendStatus(401)
       return
     }
-    const videoUrl = req.params.video_url
-    const data = await this.reportsRepository.getReportByUrl(videoUrl)
+    const id = req.params.id
+    const data = await this.reportsRepository.getReportById(id)
     if (data == null) {
       res.sendStatus(404)
       return
@@ -36,7 +36,7 @@ export class ReportsController {
 
     const urlsReports: URLReport[] = []
     for (const url of req.body.urls_reports) {
-      if (url.redirection_chain === undefined || url.categories === undefined || url.last_analysis_stats === undefined || url.reputation === undefined || url.result === undefined) {
+      if (url.redirection_chain === undefined || url.categories === undefined || url.last_analysis_stats === undefined || url.reputation === undefined) {
         res.sendStatus(422)
         return
       }

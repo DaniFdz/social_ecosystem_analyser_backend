@@ -15,7 +15,6 @@ const JWT_SECRET = process.env.JWT_SECRET ?? 'secret'
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization?.split(' ').pop()
-  console.info(req.url, token)
   req.role = 'guest'
   if (token != null) {
     try {
