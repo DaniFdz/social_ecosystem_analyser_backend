@@ -107,7 +107,8 @@ describe('endpoint /api/v1/videos', () => {
         comment_count: 1,
         favorite_count: 1,
         duration: 'string',
-        comments: []
+        comments: [],
+        published_at: '00000000'
       })
       const response = await request.get('/api/v1/videos/test').set('Authorization', adminToken)
       expect(response.status).toBe(200)
@@ -122,7 +123,8 @@ describe('endpoint /api/v1/videos', () => {
         comment_count: 1,
         favorite_count: 1,
         duration: 'string',
-        comments: []
+        comments: [],
+        published_at: '00000000'
       })
       const response = await request.get('/api/v1/videos/test').set('Authorization', adminToken)
       expect(response.body.title).toBe('test')

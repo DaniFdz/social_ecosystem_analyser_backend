@@ -47,7 +47,8 @@ export class MongoDBVideosRepository implements VideosRepository {
           comment_count: video.comment_count,
           favorite_count: video.favorite_count,
           duration: video.duration,
-          comments: video.comments
+          comments: video.comments,
+          published_at: video.published_at
         }
       }) as VideoData[]
     }
@@ -86,7 +87,8 @@ export class MongoDBVideosRepository implements VideosRepository {
       comment_count: result?.comment_count ?? 0,
       favorite_count: result?.favorite_count ?? 0,
       duration: result?.duration ?? '',
-      comments: result?.comments ?? []
+      comments: result?.comments ?? [],
+      published_at: result?.published_at ?? ''
     }
 
     return video

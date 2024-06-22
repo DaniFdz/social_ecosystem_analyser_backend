@@ -40,7 +40,8 @@ export class VideosController {
       comment_count: body.comment_count,
       favorite_count: body.favorite_count,
       duration: body.duration,
-      comments: body.comments
+      comments: body.comments,
+      published_at: body.published_at
     }
 
     const status = await this.videosRepository.addVideo(video)
