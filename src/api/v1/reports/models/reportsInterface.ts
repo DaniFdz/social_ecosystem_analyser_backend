@@ -7,7 +7,7 @@ export interface URLReport {
 }
 
 export interface GeneralReport {
-  link: string
+  id: string
   topic: string
   title: string
   description: string

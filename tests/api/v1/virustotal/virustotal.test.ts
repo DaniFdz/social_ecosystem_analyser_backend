@@ -86,7 +86,7 @@ describe('endpoint /api/v1/virustotal', () => {
           test: [{
             url: 'test',
             timestamp: 0,
-            id: 'test'
+            id: '123'
           }]
         },
         threat_names: ['test'],

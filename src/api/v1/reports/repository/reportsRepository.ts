@@ -25,14 +25,14 @@ export class MongoDBReportsRepository implements ReportsRepository {
   }
 
   async getReportByUrl (url: string): Promise<GeneralReport | null> {
-    const result = await this.reportsCollection?.findOne({ link: url })
+    const result = await this.reportsCollection?.findOne({ id: url })
     if (result == null) {
       console.error(`URL '${url}' not found`)
       return null
     }
 
     const topic: GeneralReport = {
-      link: result.link,
+      id: result.id,
       topic: result.topic,
       title: result.title,
       description: result.description,
@@ -54,14 +54,14 @@ export class MongoDBReportsRepository implements ReportsRepository {
   }
 
   async addReport (report: GeneralReport): Promise<Status> {
-    if (await this.reportsCollection?.findOne({ link: report.link }) != null) {
-      console.error(`Report '${report.link}' already exists`)
+    if (await this.reportsCollection?.findOne({ id: report.id }) != null) {
+      console.error(`Report '${report.id}' already exists`)
       return 1
     }
 
     const result = await this.reportsCollection?.insertOne(report)
     if (result?.insertedId === undefined) {
-      console.error(`Error adding report '${report.link}'`)
+      console.error(`Error adding report '${report.id}'`)
       return 2
     }
 

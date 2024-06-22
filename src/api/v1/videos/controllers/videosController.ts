@@ -26,12 +26,13 @@ export class VideosController {
       return
     }
     const { body } = req
-    if (body.title === undefined) {
+    if (body.id === undefined) {
       res.sendStatus(422)
       return
     }
 
     const video: VideoData = {
+      id: body.id,
       topic: body.topic,
       description: body.description,
       title: body.title,
@@ -52,13 +53,13 @@ export class VideosController {
     res.sendStatus(201)
   }
 
-  async getVideoByName (req: Request, res: Response): Promise<void> {
+  async getVideoById (req: Request, res: Response): Promise<void> {
     if (req.role === 'guest') {
       res.sendStatus(401)
       return
     }
-    const { title } = req.params
-    const video = await this.videosRepository.getVideoByName(title)
+    const { id } = req.params
+    const video = await this.videosRepository.getVideoById(id)
     if (video === null) {
       res.sendStatus(404)
       return

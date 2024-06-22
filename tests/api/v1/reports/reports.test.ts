@@ -34,7 +34,7 @@ describe('endpoint /api/v1/reports', () => {
   describe('GET /api/v1/reports/:video_url', () => {
     beforeEach(async () => {
       await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-        link: 'test_url',
+        id: '123',
         topic: 'test',
         title: 'test',
         description: 'test',
@@ -51,15 +51,15 @@ describe('endpoint /api/v1/reports', () => {
       const response = await request.get('/api/v1/reports/doesntexist').set('Authorization', adminToken)
       expect(response.status).toBe(404)
     })
-    it('should return 200 if the user is authenticated and the link exists', async () => {
-      const response = await request.get('/api/v1/reports/test_url').set('Authorization', adminToken)
+    it('should return 200 if the user is authenticated and the id exists', async () => {
+      const response = await request.get('/api/v1/reports/123').set('Authorization', adminToken)
       expect(response.status).toBe(200)
     })
   })
   describe('POST /api/v1/reports', () => {
     it('should return 401 if the user is not authenticated', async () => {
       const response = await request.post('/api/v1/reports').send({
-        link: 'test',
+        id: '123',
         topic: 'test',
         title: 'test',
         description: 'test',
@@ -72,7 +72,7 @@ describe('endpoint /api/v1/reports', () => {
     })
     it('should return 422 if the request body is missing a field', async () => {
       const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-        link: 'test',
+        id: '123',
         topic: 'test',
         title: 'test',
         view_count: 0,
@@ -83,7 +83,7 @@ describe('endpoint /api/v1/reports', () => {
     })
     it('should return 201 if the request body is correct', async () => {
       const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-        link: 'test',
+        id: '123',
         topic: 'test',
         title: 'test',
         description: 'test',
@@ -94,9 +94,9 @@ describe('endpoint /api/v1/reports', () => {
       })
       expect(response.status).toBe(201)
     })
-    it('it should return 409 if the link already exists', async () => {
+    it('it should return 409 if the id already exists', async () => {
       await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-        link: 'test',
+        id: '123',
         topic: 'test',
         title: 'test',
         description: 'test',
@@ -106,7 +106,7 @@ describe('endpoint /api/v1/reports', () => {
         urls_reports: []
       })
       const response = await request.post('/api/v1/reports').set('Authorization', adminToken).send({
-        link: 'test',
+        id: '123',
         topic: 'test',
         title: 'test',
         description: 'test',

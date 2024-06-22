@@ -18,13 +18,10 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
   console.info(req.url, token)
   req.role = 'guest'
   if (token != null) {
-    console.log({ JWT_SECRET })
-    console.log(jwt.verify(token, JWT_SECRET))
     try {
       const { role } = jwt.verify(token, JWT_SECRET) as Payload
       req.role = role
     } catch (err) {}
   }
-  console.log('Role: ', req.role)
   next()
 }

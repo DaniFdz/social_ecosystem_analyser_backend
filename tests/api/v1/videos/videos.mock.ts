@@ -19,15 +19,15 @@ export class MockVideosRepository implements VideosRepository {
   })
 
   addVideo: (video: VideoData) => Promise<Status> = jest.fn(async (video: VideoData) => {
-    if (this.data.find((t) => t.title === video.title) !== undefined) {
+    if (this.data.find((t) => t.id === video.id) !== undefined) {
       return 1 as Status
     }
     this.data.push(video)
     return 0 as Status
   })
 
-  getVideoByName: (title: string) => Promise<VideoData | null> = jest.fn(async (title: string) => {
-    const video = this.data.find((t) => t.title === title)
+  getVideoById: (id: string) => Promise<VideoData | null> = jest.fn(async (id: string) => {
+    const video = this.data.find((t) => t.id === id)
     return video ?? null
   })
 

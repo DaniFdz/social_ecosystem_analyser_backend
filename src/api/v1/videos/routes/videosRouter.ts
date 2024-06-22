@@ -10,7 +10,7 @@ export function getVideosRouter (videosRepository: VideosRepository): Router {
 
   router
     .get('/', async (req, res) => { await videosController.getVideos(req, res) })
-    .get('/:title', async (req, res) => { await videosController.getVideoByName(req, res) })
+    .get('/:id', async (req, res) => { await videosController.getVideoById(req, res) })
     .post('/', async (req, res) => { await videosController.postVideo(req, res) })
   return router
 }

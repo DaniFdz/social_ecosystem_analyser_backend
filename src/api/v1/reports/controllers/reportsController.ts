@@ -29,7 +29,7 @@ export class ReportsController {
       res.sendStatus(401)
       return
     }
-    if (req.body.link === undefined || req.body.topic === undefined || req.body.title === undefined || req.body.description === undefined || req.body.view_count === undefined || req.body.like_count === undefined || req.body.urls_reports === undefined) {
+    if (req.body.id === undefined || req.body.topic === undefined || req.body.title === undefined || req.body.description === undefined || req.body.view_count === undefined || req.body.like_count === undefined || req.body.urls_reports === undefined) {
       res.sendStatus(422)
       return
     }
@@ -43,7 +43,7 @@ export class ReportsController {
       urlsReports.push(url as URLReport)
     }
     const report: GeneralReport = {
-      link: req.body.link,
+      id: req.body.id,
       topic: req.body.topic,
       title: req.body.title,
       description: req.body.description,
