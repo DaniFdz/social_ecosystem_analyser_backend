@@ -3,3 +3,4 @@ node_modules/
 coverage/
 mongodb_data/
 mongodb_data_dev/
+.vscode/settings.json
