@@ -56,6 +56,12 @@ describe('endpoint /api/v1/topics', () => {
       })
       expect(response.status).toBe(422)
     })
+    it('should return 406 if the topic is not morally correct :V', async () => {
+      const response = await request.post('/api/v1/topics').set('Authorization', adminToken).send({
+        name: 'drugs'
+      })
+      expect(response.status).toBe(406)
+    })
     it('should return 500 if the topic could not be added', async () => {
       await request.post('/api/v1/topics').set('Authorization', adminToken).send({
         name: 'test'

@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
 import { type Topic } from '@v1/topics/models/topicsInterface'
+import { validateTopic } from '../lib/validateTopic'
 
 export class TopicsController {
   topicsRepository: TopicsRepository
@@ -22,6 +23,11 @@ export class TopicsController {
     const { body } = req
     if (body.name === undefined) {
       res.sendStatus(422)
+      return
+    }
+
+    if (!validateTopic(body.name as string)) {
+      res.sendStatus(406)
       return
     }
 
