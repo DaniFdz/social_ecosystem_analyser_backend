@@ -23,5 +23,6 @@ export interface GeneralReport {
   published_at: string
   view_count: number
   like_count: number
+  avg_score: number
   urls_reports: URLReport[]
 }

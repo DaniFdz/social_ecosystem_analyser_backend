@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express'
 import { type ReportsRepository } from '@v1/reports/repository/reportsRepository'
 import { type GeneralReport, type URLReport } from '../models/reportsInterface'
-// import { type GeneralReport } from '@v1/reports/models/reportsInterface'
 
 export class ReportsController {
   reportsRepository: ReportsRepository
@@ -50,6 +49,7 @@ export class ReportsController {
       published_at: req.body.published_at,
       view_count: req.body.view_count,
       like_count: req.body.like_count,
+      avg_score: req.body.avg_score,
       urls_reports: urlsReports
     }
 

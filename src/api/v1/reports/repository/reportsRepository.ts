@@ -39,13 +39,23 @@ export class MongoDBReportsRepository implements ReportsRepository {
       published_at: result.published_at,
       view_count: result.view_count,
       like_count: result.like_count,
+      avg_score: result.avg_score,
       urls_reports: result.urls_reports.map((url) => {
         return {
+          first_submission_date: url.first_submission_date,
+          last_modification_date: url.last_modification_date,
+          last_http_response_content_length: url.last_http_response_content_length,
+          tags: url.tags,
+          html_meta: url.html_meta,
+          times_submitted: url.times_submitted,
           redirection_chain: url.redirection_chain,
+          url: url.url,
+          domain: url.domain,
           categories: url.categories,
           last_analysis_stats: url.last_analysis_stats,
           reputation: url.reputation,
-          result: url.result
+          last_http_response_code: url.last_http_response_code,
+          last_http_response_headers: url.last_http_response_headers
         } satisfies URLReport
       })
     } satisfies GeneralReport

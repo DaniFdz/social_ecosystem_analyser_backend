@@ -35,6 +35,7 @@ export class VideosController {
       id: body.id,
       topic: body.topic,
       description: body.description,
+      score: body.score,
       title: body.title,
       view_count: body.view_count,
       like_count: body.like_count,
