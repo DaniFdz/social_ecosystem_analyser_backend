@@ -1,4 +1,4 @@
-import { type User } from '@v1/auth/repository/authInterface'
+import { type User } from '@v1/auth/models/authInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1
@@ -33,7 +33,7 @@ export class MongoDBAuthRepository implements AuthRepository {
 
   async createUser (user: User): Promise<Status> {
     const userExists = await this.authCollection?.findOne({ username: user.username })
-    if (userExists !== null) {
+    if (userExists != null) {
       return 1
     }
     const status = await this.authCollection?.insertOne(user)

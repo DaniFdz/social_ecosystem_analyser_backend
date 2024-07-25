@@ -1,4 +1,4 @@
-import { type VirustotalData } from '@v1/virustotal/repository/virustotalInterface'
+import { type VirustotalData } from '@v1/virustotal/models/virustotalInterface'
 import { type Status, type VirustotalRepository } from '@v1/virustotal/repository/virustotalRepository'
 import { jest } from '@jest/globals'
 

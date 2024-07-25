@@ -1,4 +1,4 @@
-import { type Topic } from '@v1/topics/repository/topicsInterface'
+import { type Topic } from '@v1/topics/models/topicsInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1
@@ -31,12 +31,13 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     const result = await this.topicCollection?.find().toArray()
 
     let data: Topic[] = []
-    if (result !== null) {
+    if (result != null) {
       data = result?.map((topic) => {
         return {
           name: topic.name,
           finished: topic.finished,
-          next_page_token: topic.next_page_token
+          next_page_token: topic.next_page_token,
+          type: topic.type
         }
       }) as Topic[]
     }
@@ -44,7 +45,7 @@ export class MongoDBTopicsRepository implements TopicsRepository {
   }
 
   async addTopic (topic: Topic): Promise<Status> {
-    if (await this.topicCollection?.findOne({ name: topic.name }) !== null) {
+    if (await this.topicCollection?.findOne({ name: topic.name }) != null) {
       console.error(`Topic '${topic.name}' already exists`)
       return 1
     }
@@ -82,7 +83,8 @@ export class MongoDBTopicsRepository implements TopicsRepository {
     const topic: Topic = {
       name: result?.name ?? '',
       finished: result?.finished ?? false,
-      next_page_token: result?.next_page_token ?? ''
+      next_page_token: result?.next_page_token ?? '',
+      type: result?.type ?? 'topic'
     }
 
     return topic

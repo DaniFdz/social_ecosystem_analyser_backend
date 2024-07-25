@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import type { Role } from '@v1/auth/repository/authInterface'
+import type { Role } from '@v1/auth/models/authInterface'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'secret'
 
@@ -22,7 +22,7 @@ export const comparePassword = async (password: string, hash: string): Promise<b
 }
 
 export const generateToken = (payload: Payload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' })
+  return jwt.sign(payload, JWT_SECRET)
 }
 
 export const verifyToken = (token: string): Payload | null => {

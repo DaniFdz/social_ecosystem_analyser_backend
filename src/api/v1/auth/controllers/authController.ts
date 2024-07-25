@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { type AuthRepository } from '@v1/auth/repository/authRepository'
-import { type User } from '@v1/auth/repository/authInterface'
+import { type User } from '@v1/auth/models/authInterface'
 import { type Payload, hashPassword, generateToken, comparePassword, verifyToken } from '@/lib/cryptography'
 
 export class AuthController {
