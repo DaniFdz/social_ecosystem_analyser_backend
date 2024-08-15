@@ -45,7 +45,7 @@ describe('endpoint /api/v1/videos', () => {
       const response = await request.get('/api/v1/videos').set('Authorization', adminToken)
       expect(response.body.data).toBeInstanceOf(Array<VideoData>)
     })
-    it('should limit the number of videos to 100 and start with element 100', async () => {
+    it('should limit the number of videos to 10 and start with element 10', async () => {
       for (let i = 0; i < 250; i++) {
         await request.post('/api/v1/videos').set('Authorization', adminToken).send({
           id: `test${i}`
@@ -53,8 +53,8 @@ describe('endpoint /api/v1/videos', () => {
       }
       const response = await request.get('/api/v1/videos?pageNum=1').set('Authorization', adminToken)
       expect(response.body.data).toBeInstanceOf(Array<VideoData>)
-      expect(response.body.data.length).toBe(100)
-      expect(response.body.data[0].id).toBe('test100')
+      expect(response.body.data.length).toBe(10)
+      expect(response.body.data[0].id).toBe('test10')
     })
   })
 

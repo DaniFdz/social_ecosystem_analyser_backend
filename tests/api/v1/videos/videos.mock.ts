@@ -4,7 +4,7 @@ import { jest } from '@jest/globals'
 
 export class MockVideosRepository implements VideosRepository {
   data: VideoData[] = []
-  pageSize: number = 100
+  pageSize: number = 10
 
   constructor () {
     this.data = []
