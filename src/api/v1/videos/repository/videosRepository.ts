@@ -12,7 +12,7 @@ export abstract class VideosRepository {
 
 export class MongoDBVideosRepository implements VideosRepository {
   videoCollection: Collection<VideoData> | null = null
-  pageSize: number = 100
+  pageSize: number = 10
 
   constructor () {
     const connection = process.env.MONGODB_URI ?? 'mongodb://admin:admin@localhost:27017/'
