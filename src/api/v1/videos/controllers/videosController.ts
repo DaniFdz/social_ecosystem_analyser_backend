@@ -10,9 +10,11 @@ export class VideosController {
   }
 
   async getVideos (req: Request, res: Response): Promise<void> {
-    const data = req.query.pageNum != null
-      ? await this.videosRepository.getVideos(parseInt(req.query.pageNum as string))
-      : await this.videosRepository.getVideos()
+    const { pageNum, pageSize } = req.query
+    const data = await this.videosRepository.getVideos(
+      pageNum !== undefined ? parseInt(pageNum as string) : undefined,
+      pageSize !== undefined ? parseInt(pageSize as string) : undefined
+    )
     res.json(data)
   }
 
