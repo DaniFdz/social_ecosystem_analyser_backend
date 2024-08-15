@@ -16,10 +16,6 @@ export class TopicsController {
   }
 
   async postTopic (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { body } = req
     if (body.name === undefined) {
       res.sendStatus(422)
@@ -47,10 +43,6 @@ export class TopicsController {
   }
 
   async putTopic (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { body } = req
     if (body.name === undefined || body.finished === undefined || body.next_page_token === undefined || body.type === undefined) {
       res.sendStatus(422)
@@ -75,10 +67,6 @@ export class TopicsController {
   }
 
   async getTopicByName (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { name } = req.params
     const topic = await this.topicsRepository.getTopicByName(name)
     if (topic === null) {
@@ -89,10 +77,6 @@ export class TopicsController {
   }
 
   async deleteTopic (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { name } = req.params
     const status = await this.topicsRepository.deleteTopic(name)
     if (status !== 0) {

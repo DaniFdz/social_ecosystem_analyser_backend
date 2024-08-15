@@ -2,6 +2,7 @@
 import { Router } from 'express'
 import { TopicsController } from '@v1/topics/controllers/topicsController'
 import { type TopicsRepository } from '@v1/topics/repository/topicsRepository'
+import { noGuests } from '@/middlewares/routes'
 
 export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
   const router = Router()
@@ -10,9 +11,10 @@ export function getTopicsRouter (topicsRepository: TopicsRepository): Router {
 
   router
     .get('/', async (req, res) => { await topicsController.getTopics(req, res) })
+    .get('/:name', async (req, res) => { await topicsController.getTopicByName(req, res) })
+    .use(noGuests)
     .post('/', async (req, res) => { await topicsController.postTopic(req, res) })
     .put('/:name', async (req, res) => { await topicsController.putTopic(req, res) })
-    .get('/:name', async (req, res) => { await topicsController.getTopicByName(req, res) })
     .delete('/:name', async (req, res) => { await topicsController.deleteTopic(req, res) })
   return router
 }

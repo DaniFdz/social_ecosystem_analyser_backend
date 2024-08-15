@@ -129,10 +129,6 @@ describe('endpoint /api/v1/topics', () => {
   })
 
   describe('GET /api/v1/topics/:name', () => {
-    it('should return 401 if the user is not authenticated', async () => {
-      const response = await request.get('/api/v1/topics/test')
-      expect(response.status).toBe(401)
-    })
     it('should return 404 if the topic was not found', async () => {
       const response = await request.get('/api/v1/topics/test').set('Authorization', adminToken)
       expect(response.status).toBe(404)

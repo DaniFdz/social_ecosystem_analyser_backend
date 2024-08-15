@@ -56,6 +56,17 @@ describe('endpoint /api/v1/videos', () => {
       expect(response.body.data.length).toBe(10)
       expect(response.body.data[0].id).toBe('test10')
     })
+
+    it('should take the page size from the query', async () => {
+      for (let i = 0; i < 250; i++) {
+        await request.post('/api/v1/videos').set('Authorization', adminToken).send({
+          id: `test${i}`
+        })
+      }
+      const response = await request.get('/api/v1/videos?pageNum=0&pageSize=20').set('Authorization', adminToken)
+      expect(response.body.data).toBeInstanceOf(Array<VideoData>)
+      expect(response.body.data.length).toBe(20)
+    })
   })
 
   describe('POST /api/v1/videos', () => {

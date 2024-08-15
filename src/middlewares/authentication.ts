@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from 'express'
 import type { Payload } from '@/lib/cryptography'
+import { type Role } from '@/api/v1/auth/models/authInterface'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      role: string
+      role: Role
     }
   }
 }

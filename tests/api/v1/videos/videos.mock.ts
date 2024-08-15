@@ -10,11 +10,14 @@ export class MockVideosRepository implements VideosRepository {
     this.data = []
   }
 
-  getVideos: (pageNum?: number) => Promise<{ data: VideoData[] }> = jest.fn(async (pageNum?) => {
+  getVideos: (pageNum?: number, pageSize?: number) => Promise<{ data: VideoData[] }> = jest.fn(async (pageNum?: number, pageSize?: number) => {
+    if (pageSize === undefined) {
+      pageSize = this.pageSize
+    }
     if (pageNum === undefined) {
       return { data: this.data }
     } else {
-      return { data: this.data.slice(this.pageSize * (pageNum as number), this.pageSize * (pageNum as number + 1)) }
+      return { data: this.data.slice(pageSize * (pageNum), pageSize * (pageNum + 1)) }
     }
   })
 

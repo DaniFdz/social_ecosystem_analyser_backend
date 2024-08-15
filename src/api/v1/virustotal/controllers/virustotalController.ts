@@ -10,19 +10,11 @@ export class VirustotalController {
   }
 
   async getVirustotalReports (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const data = await this.virustotalRepository.getVirustotalReports()
     res.json(data)
   }
 
   async postVirustotalReport (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { body } = req
     if (body.url === undefined) {
       res.sendStatus(422)
@@ -40,10 +32,6 @@ export class VirustotalController {
   }
 
   async getVirustotalReportByURL (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { url } = req.params
     const virustotalReport = await this.virustotalRepository.getVirustotalReportByURL(url)
     if (virustotalReport === null) {

@@ -5,7 +5,7 @@ export type Status = 0 | 1
 
 export abstract class VideosRepository {
   abstract pageSize: number
-  abstract getVideos: (pageNum?: number) => Promise<{ data: VideoData[] }>
+  abstract getVideos: (pageNum?: number, pageSize?: number) => Promise<{ data: VideoData[] }>
   abstract addVideo: (video: VideoData) => Promise<Status>
   abstract getVideoById: (id: string) => Promise<VideoData | null>
 }
@@ -27,12 +27,15 @@ export class MongoDBVideosRepository implements VideosRepository {
       })
   }
 
-  async getVideos (pageNum?: number): Promise<{ data: VideoData[] }> {
+  async getVideos (pageNum?: number, pageSize?: number): Promise<{ data: VideoData[] }> {
     let result
-    if (pageNum === undefined) {
+    if (pageSize === undefined) {
+      pageSize = this.pageSize
+    }
+    if (pageNum === undefined || pageNum < 0) {
       result = await this.videoCollection?.find().toArray()
     } else {
-      result = await this.videoCollection?.find().skip(this.pageSize * pageNum).limit(this.pageSize).toArray()
+      result = await this.videoCollection?.find().skip(pageSize * pageNum).limit(pageSize).toArray()
     }
 
     let data: VideoData[] = []
