@@ -10,10 +10,6 @@ export class ReportsController {
   }
 
   async getReports (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const id = req.params.id
     const data = await this.reportsRepository.getReportById(id)
     if (data == null) {
@@ -24,10 +20,6 @@ export class ReportsController {
   }
 
   async addReport (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     if (req.body.id === undefined || req.body.topic === undefined || req.body.title === undefined || req.body.description === undefined || req.body.view_count === undefined || req.body.like_count === undefined || req.body.urls_reports === undefined) {
       res.sendStatus(422)
       return

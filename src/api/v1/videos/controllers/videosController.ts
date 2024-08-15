@@ -10,10 +10,6 @@ export class VideosController {
   }
 
   async getVideos (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const data = req.query.pageNum != null
       ? await this.videosRepository.getVideos(parseInt(req.query.pageNum as string))
       : await this.videosRepository.getVideos()
@@ -21,10 +17,6 @@ export class VideosController {
   }
 
   async postVideo (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { body } = req
     if (body.id === undefined) {
       res.sendStatus(422)
@@ -55,10 +47,6 @@ export class VideosController {
   }
 
   async getVideoById (req: Request, res: Response): Promise<void> {
-    if (req.role === 'guest') {
-      res.sendStatus(401)
-      return
-    }
     const { id } = req.params
     const video = await this.videosRepository.getVideoById(id)
     if (video === null) {
