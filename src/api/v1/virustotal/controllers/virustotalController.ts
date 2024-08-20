@@ -32,7 +32,7 @@ export class VirustotalController {
   }
 
   async getVirustotalReportByURL (req: Request, res: Response): Promise<void> {
-    const { url } = req.params
+    const url = req.query.url as string
     const virustotalReport = await this.virustotalRepository.getVirustotalReportByURL(url)
     if (virustotalReport === null) {
       res.sendStatus(404)

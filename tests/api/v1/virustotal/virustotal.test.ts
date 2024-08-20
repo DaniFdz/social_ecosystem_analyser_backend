@@ -109,25 +109,25 @@ describe('endpoint /api/v1/virustotal', () => {
 
   describe('GET /api/v1/virustotal/:url', () => {
     it('should return 401 if the user is not authenticated', async () => {
-      const response = await request.get('/api/v1/virustotal/test')
+      const response = await request.get('/api/v1/virustotal/url?url=test')
       expect(response.status).toBe(401)
     })
     it('should return 404 if the virustotal report was not found', async () => {
-      const response = await request.get('/api/v1/virustotal/testtest').set('Authorization', adminToken)
+      const response = await request.get('/api/v1/virustotal/url?url=testtest').set('Authorization', adminToken)
       expect(response.status).toBe(404)
     })
     it('should return 200 if the virustotal report was found', async () => {
       await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
-      const response = await request.get('/api/v1/virustotal/test').set('Authorization', adminToken)
+      const response = await request.get('/api/v1/virustotal/url?url=test').set('Authorization', adminToken)
       expect(response.status).toBe(200)
     })
     it('should return the virustotal report', async () => {
       await request.post('/api/v1/virustotal').set('Authorization', adminToken).send({
         url: 'test'
       })
-      const response = await request.get('/api/v1/virustotal/test').set('Authorization', adminToken)
+      const response = await request.get('/api/v1/virustotal/url?url=test').set('Authorization', adminToken)
       expect(response.body.url).toBe('test')
     })
   })
