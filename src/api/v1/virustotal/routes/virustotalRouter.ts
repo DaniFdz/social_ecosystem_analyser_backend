@@ -12,7 +12,7 @@ export function getVirustotalRouter (virustotalRepository: VirustotalRepository)
   router
     .use(noGuests)
     .get('/', async (req, res) => { await virustotalController.getVirustotalReports(req, res) })
-    .get('/:url', async (req, res) => { await virustotalController.getVirustotalReportByURL(req, res) })
+    .get('/url', async (req, res) => { await virustotalController.getVirustotalReportByURL(req, res) })
     .post('/', async (req, res) => { await virustotalController.postVirustotalReport(req, res) })
   return router
 }
