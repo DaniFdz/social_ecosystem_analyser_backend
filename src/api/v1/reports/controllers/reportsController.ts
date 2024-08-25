@@ -9,6 +9,16 @@ export class ReportsController {
     this.reportsRepository = reportsRepository
   }
 
+  async getTopicReport (req: Request, res: Response): Promise<void> {
+    const topic = req.params.topic
+    const data = await this.reportsRepository.getReportByTopic(topic)
+    if (data == null) {
+      res.sendStatus(404)
+      return
+    }
+    res.json(data)
+  }
+
   async getReports (req: Request, res: Response): Promise<void> {
     const id = req.params.id
     const data = await this.reportsRepository.getReportById(id)

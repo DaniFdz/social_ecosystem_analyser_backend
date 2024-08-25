@@ -12,6 +12,7 @@ export function getReportsRouter (reportsRepository: ReportsRepository): Router 
   router
     .use(noGuests)
     .get('/:id', async (req, res) => { await reportsController.getReports(req, res) })
+    .get('/topic/:topic', async (req, res) => { await reportsController.getTopicReport(req, res) })
     .post('/', async (req, res) => { await reportsController.addReport(req, res) })
   return router
 }
