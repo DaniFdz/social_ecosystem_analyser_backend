@@ -100,10 +100,6 @@ describe('endpoint /api/v1/videos', () => {
   })
 
   describe('GET /api/v1/videos/:id', () => {
-    it('should return 401 if the user is not authenticated', async () => {
-      const response = await request.get('/api/v1/videos/123')
-      expect(response.status).toBe(401)
-    })
     it('should return 404 if the video was not found', async () => {
       const response = await request.get('/api/v1/videos/123').set('Authorization', adminToken)
       expect(response.status).toBe(404)

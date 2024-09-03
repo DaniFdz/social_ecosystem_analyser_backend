@@ -26,3 +26,20 @@ export interface GeneralReport {
   avg_score: number
   urls_reports: URLReport[]
 }
+
+export interface ReportByTopic {
+  light: 'red' | 'green' | 'yellow'
+  topic: string
+  score: number
+  url_ok: number
+  url_not_ok: number
+  videos: VideosBasicInfo[]
+}
+
+export interface VideosBasicInfo {
+  title: string
+  published_at: string
+  view_count: number
+  like_count: number
+  avg_score: number
+}

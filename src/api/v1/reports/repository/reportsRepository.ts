@@ -1,4 +1,4 @@
-import type { GeneralReport, URLReport } from '@v1/reports/models/reportsInterface'
+import type { GeneralReport, ReportByTopic, URLReport } from '@v1/reports/models/reportsInterface'
 import { type Collection, MongoClient } from 'mongodb'
 
 export type Status = 0 | 1 | 2
@@ -6,6 +6,7 @@ export type Status = 0 | 1 | 2
 export abstract class ReportsRepository {
   abstract getReportById: (id: string) => Promise<GeneralReport | null>
   abstract addReport: (report: GeneralReport) => Promise<Status>
+  abstract getReportByTopic: (topic: string) => Promise<ReportByTopic | null>
 }
 
 export class MongoDBReportsRepository implements ReportsRepository {
@@ -76,5 +77,62 @@ export class MongoDBReportsRepository implements ReportsRepository {
     }
 
     return 0
+  }
+
+  async getReportByTopic (topic: string): Promise<ReportByTopic | null> {
+    const reports = await this.reportsCollection?.find({ topic }).toArray()
+    if (reports == null) {
+      console.error(`Report '${topic}' not found`)
+      return null
+    }
+
+    const avgScore = this.calculateAvgScore(reports.map((report) => report.avg_score))
+    const { urlOK, urlNotOK } = this.calculateUrlStatus(reports.map((report) => report.urls_reports))
+
+    const reportTopic: ReportByTopic = {
+      light: avgScore < -0.5 ? 'red' : avgScore <= 0.5 ? 'yellow' : 'green',
+      topic,
+      score: avgScore,
+      url_ok: urlOK,
+      url_not_ok: urlNotOK,
+      videos: reports.map((report) => {
+        return {
+          id: report.id,
+          title: report.title,
+          published_at: report.published_at,
+          view_count: report.view_count,
+          like_count: report.like_count,
+          avg_score: report.avg_score
+        }
+      })
+    }
+    return reportTopic
+  }
+
+  private calculateAvgScore (scores: number[]): number {
+    const sum = scores.reduce((acc, score) => acc + score, 0)
+    return sum / scores.length
+  }
+
+  private calculateUrlStatus (urls: URLReport[][]): { urlOK: number, urlNotOK: number } {
+    let urlOK = 0
+    let urlNotOK = 0
+
+    if (urls.length === 0) {
+      return { urlOK, urlNotOK }
+    }
+
+    for (const report of urls.filter(Boolean)) {
+      try {
+        if (report[0].last_analysis_stats.malicious > 0) {
+          urlNotOK++
+        } else {
+          urlOK++
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    return { urlOK, urlNotOK }
   }
 }

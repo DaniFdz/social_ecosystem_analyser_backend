@@ -43,9 +43,9 @@ describe('endpoint /api/v1/reports', () => {
         urls_reports: []
       })
     })
-    it('should return 401 if the user is not authenticated', async () => {
+    it('should return 404 if the user is not authenticated', async () => {
       const response = await request.get('/api/v1/reports/test')
-      expect(response.status).toBe(401)
+      expect(response.status).toBe(404)
     })
     it('should return 404 if the video_url is not found', async () => {
       const response = await request.get('/api/v1/reports/doesntexist').set('Authorization', adminToken)

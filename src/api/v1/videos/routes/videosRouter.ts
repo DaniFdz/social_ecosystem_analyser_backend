@@ -10,9 +10,9 @@ export function getVideosRouter (videosRepository: VideosRepository): Router {
   const videosController = new VideosController(videosRepository)
 
   router
+    .get('/:id', async (req, res) => { await videosController.getVideoById(req, res) })
     .use(noGuests)
     .get('/', async (req, res) => { await videosController.getVideos(req, res) })
-    .get('/:id', async (req, res) => { await videosController.getVideoById(req, res) })
     .post('/', async (req, res) => { await videosController.postVideo(req, res) })
   return router
 }
