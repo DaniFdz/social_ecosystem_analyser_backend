@@ -121,14 +121,16 @@ export class MongoDBReportsRepository implements ReportsRepository {
     if (urls.length === 0) {
       return { urlOK, urlNotOK }
     }
-    for (const report of urls) {
-      if (report === undefined) {
-        continue
-      }
-      if (report[0].last_analysis_stats.malicious > 0) {
-        urlNotOK++
-      } else {
-        urlOK++
+
+    for (const report of urls.filter(Boolean)) {
+      try {
+        if (report[0].last_analysis_stats.malicious > 0) {
+          urlNotOK++
+        } else {
+          urlOK++
+        }
+      } catch (e) {
+        console.error(e)
       }
     }
     return { urlOK, urlNotOK }

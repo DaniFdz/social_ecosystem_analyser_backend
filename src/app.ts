@@ -31,7 +31,7 @@ export const getApp = (
   const virustotalRouter = getVirustotalRouter(virustotalRepository)
   const reportsRouter = getReportsRouter(reportsRepository)
 
-  const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:4321'
+  const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:3001'
 
   const corsOptions: CorsOptions = {
     origin: CORS_ORIGIN,
